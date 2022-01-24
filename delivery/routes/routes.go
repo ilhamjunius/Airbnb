@@ -13,9 +13,12 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, trctrl *transactio
 	// CRUD Users
 	// ---------------------------------------------------------------------
 	e.GET("/users", uctrl.GetUsersCtrl())
+	e.POST("/login", uctrl.LoginAuthCtrl())
+	e.POST("/register", uctrl.RegisterUserCtrl())
 
 	// ---------------------------------------------------------------------
 	// CRUD Transactions
 	// ---------------------------------------------------------------------
 	e.GET("/transactions", trctrl.Get(), middleware.JWT([]byte("RAHASIA")))
+
 }
