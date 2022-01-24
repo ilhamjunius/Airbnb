@@ -19,3 +19,20 @@ func (ur *UserRepository) Gets() ([]entities.User, error) {
 	ur.db.Find(&users)
 	return users, nil
 }
+func (ur *UserRepository) LoginUser(email, password string) (entities.User, error) {
+	var user entities.User
+
+	if err := ur.db.Where("Email = ? AND Password=?", email, password).First(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+func (ur *UserRepository) Register(newUser entities.User) (entities.User, error) {
+	// user := entities.User{}
+	err := ur.db.Save(&newUser).Error
+	if err != nil {
+		return newUser, err
+	}
+	return newUser, nil
+}
