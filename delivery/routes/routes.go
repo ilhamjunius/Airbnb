@@ -16,6 +16,7 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, trctrl *transactio
 	e.POST("/login", uctrl.LoginAuthCtrl())
 	e.POST("/register", uctrl.RegisterUserCtrl())
 	e.DELETE("/users", uctrl.DeleteUserCtrl(), middleware.JWT([]byte("RAHASIA")))
+	e.PUT("/users", uctrl.UpdateUserCtrl(), middleware.JWT([]byte("RAHASIA")))
 
 	// ---------------------------------------------------------------------
 	// CRUD Transactions

@@ -45,3 +45,13 @@ func (ur *UserRepository) Delete(userId int) (entities.User, error) {
 
 	return user, nil
 }
+func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
+		return user, err
+	}
+
+	ur.db.Model(&user).Updates(newUser)
+
+	return user, nil
+}
