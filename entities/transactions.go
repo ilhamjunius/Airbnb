@@ -8,4 +8,5 @@ type Transaction struct {
 	Invoice string
 	Status  string
 	Url     string
+	Book    []Book
 }

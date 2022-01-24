@@ -7,6 +7,8 @@ type Room struct {
 	ID       uint
 	Name     string
 	Location string
+	Duration int `gorm:"not null"`
 	User_id  uint
 	Price    int
+	Book     []Book
 }

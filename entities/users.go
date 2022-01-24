@@ -9,4 +9,5 @@ type User struct {
 	Email    string `gorm:"unique"`
 	Password string `gorm:"->:false;<-:create"`
 	Room     []Room
+	Book     []Book
 }

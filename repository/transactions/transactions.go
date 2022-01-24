@@ -18,5 +18,4 @@ func (tr *TransactionsRepository) Get(trID uint) (entities.Transaction, error) {
 	transaction := entities.Transaction{}
 	tr.db.Where("id=?", trID).Find(&transaction)
 	return transaction, nil
-
 }
