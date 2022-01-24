@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"project-airbnb/delivery/controllers/rooms"
 	"project-airbnb/delivery/controllers/transactions"
 	"project-airbnb/delivery/controllers/users"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPath(e *echo.Echo, uctrl *users.UsersController, trctrl *transactions.TransactionsController) {
+func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.RoomsController, trctrl *transactions.TransactionsController) {
 	// ---------------------------------------------------------------------
 	// CRUD Users
 	// ---------------------------------------------------------------------
@@ -16,6 +17,13 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, trctrl *transactio
 	e.POST("/login", uctrl.LoginAuthCtrl())
 	e.POST("/register", uctrl.RegisterUserCtrl())
 
+	// ---------------------------------------------------------------------
+	// CRUD Rooms
+	// ---------------------------------------------------------------------
+	e.POST("/rooms", rmCtrl.Create(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/rooms", rmCtrl.Gets())
+	e.PUT("/rooms", rmCtrl.Update(), middleware.JWT([]byte("RAHASIA")))
+	e.DELETE("/rooms", rmCtrl.Delete(), middleware.JWT([]byte("RAHASIA")))
 	// ---------------------------------------------------------------------
 	// CRUD Transactions
 	// ---------------------------------------------------------------------
