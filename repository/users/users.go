@@ -36,3 +36,12 @@ func (ur *UserRepository) Register(newUser entities.User) (entities.User, error)
 	}
 	return newUser, nil
 }
+func (ur *UserRepository) Delete(userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
+		return user, err
+	}
+	ur.db.Delete(&user)
+
+	return user, nil
+}

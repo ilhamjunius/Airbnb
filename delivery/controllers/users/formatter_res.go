@@ -6,10 +6,11 @@ type GetUsersResponseFormat struct {
 	Data    interface{} `json:"data"`
 }
 type LoginResponseFormat struct {
+	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Token   string `json:"token"`
 }
-type RegisterUserResponseFormat struct {
+type UserResponseFormat struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`

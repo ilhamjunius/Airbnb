@@ -39,11 +39,12 @@ func (uscon UsersController) LoginAuthCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusNotAcceptable, common.NewStatusNotAcceptable())
 		}
 
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"message": "Successful Operation",
-			"token":   token,
-		},
-		)
+		return c.JSON(http.StatusOK, LoginResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Token:   token,
+		})
+
 	}
 }
 func (uscon UsersController) RegisterUserCtrl() echo.HandlerFunc {
@@ -71,7 +72,7 @@ func (uscon UsersController) RegisterUserCtrl() echo.HandlerFunc {
 			Name:  res.Name,
 			Email: res.Email,
 		}
-		response := RegisterUserResponseFormat{
+		response := UserResponseFormat{
 			Code:    http.StatusOK,
 			Message: "Successful Operation",
 			Data:    data,
@@ -94,6 +95,30 @@ func (uscon UsersController) GetUsersCtrl() echo.HandlerFunc {
 			return c.JSON(http.StatusOK, response)
 		}
 
+	}
+}
+func (uscon UsersController) DeleteUserCtrl() echo.HandlerFunc {
+
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
+		deletedUser, err := uscon.Repo.Delete(id)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		}
+		data := UserResponse{
+			ID:    deletedUser.ID,
+			Name:  deletedUser.Name,
+			Email: deletedUser.Email,
+		}
+		response := UserResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+
+		return c.JSON(http.StatusOK, response)
 	}
 }
 func CreateTokenAuth(id uint) (string, error) {
