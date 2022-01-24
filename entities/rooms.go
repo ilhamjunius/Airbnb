@@ -2,11 +2,11 @@ package entities
 
 import "gorm.io/gorm"
 
-type User struct {
+type Room struct {
 	gorm.Model
 	ID       uint
 	Name     string
-	Email    string `gorm:"unique"`
-	Password string
-	Room     []Room
+	Location string
+	User_id  uint
+	Price    int
 }
