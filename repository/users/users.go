@@ -55,3 +55,10 @@ func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.Us
 
 	return user, nil
 }
+func (ur *UserRepository) Get(userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, userId).Error; err != nil {
+		return user, err
+	}
+	return user, nil
+}

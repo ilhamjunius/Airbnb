@@ -62,7 +62,6 @@ func (uscon UsersController) RegisterUserCtrl() echo.HandlerFunc {
 			Password: stringPassword,
 			Name:     newUserReq.Name,
 		}
-		fmt.Println(newUser.Email)
 		res, err := uscon.Repo.Register(newUser)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
@@ -71,6 +70,29 @@ func (uscon UsersController) RegisterUserCtrl() echo.HandlerFunc {
 			ID:    res.ID,
 			Name:  res.Name,
 			Email: res.Email,
+		}
+		response := UserResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+
+		return c.JSON(http.StatusOK, response)
+	}
+}
+func (uscon UsersController) GetUserByIdCtrl() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		id := int(claims["userid"].(float64))
+		user, err := uscon.Repo.Get(id)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		}
+		data := UserResponse{
+			ID:    user.ID,
+			Name:  user.Name,
+			Email: user.Email,
 		}
 		response := UserResponseFormat{
 			Code:    http.StatusOK,
