@@ -17,13 +17,13 @@ func NewTransactionsControllers(tsrep transactions.TransactionsInterface) *Trans
 	return &TransactionsController{Repo: tsrep}
 }
 
-func (trrep TransactionsController) Get() echo.HandlerFunc {
+func (trrep TransactionsController) Gets() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		userID := int(claims["userid"].(float64))
 
-		if res, err := trrep.Repo.Get(uint(userID)); err != nil {
+		if res, err := trrep.Repo.Gets(uint(userID)); err != nil || len(res) == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			return c.JSON(http.StatusOK, map[string]interface{}{
@@ -32,6 +32,53 @@ func (trrep TransactionsController) Get() echo.HandlerFunc {
 				"data":    res,
 			})
 		}
-
 	}
 }
+func (trrep TransactionsController) Get() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userID := int(claims["userid"].(float64))
+
+		if res, err := trrep.Repo.Get(uint(userID)); err != nil || len(res) == 0 {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"code":    200,
+				"message": "Successful Operation",
+				"data":    res,
+			})
+		}
+	}
+}
+
+func (trrep TransactionsController) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		updateRoom := UpdateTransactionsRequestFormat{}
+		if err := c.Bind(&updateRoom); err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+
+		if res, err := trrep.Repo.Update(updateRoom.InvoiceID); err != nil {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			responses := UpdateTransactionsResponseFormat{
+				Code:    http.StatusOK,
+				Message: "Successful Operation",
+				Data:    res,
+			}
+			return c.JSON(http.StatusOK, responses)
+		}
+	}
+}
+
+// func (trrep TransactionsController)Update()echo.HandlerFunc{
+// 	return func(c echo.Context) error {
+// 		var notificationPayload map[string]interface{}
+// 		if err:=c.Bind(&notificationPayload);err!=nil{
+// 			return c.JSON(http.StatusBadRequest,common.NewBadRequestResponse())
+// 		}
+
+// 	}
+// }
