@@ -46,7 +46,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd project3
-          cd Project-airbnb
+          cd project-airbnb
           git pull origin main
           docker-compose down --rmi all
           docker-compose up --build -d
