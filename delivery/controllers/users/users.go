@@ -31,13 +31,10 @@ func (uscon UsersController) LoginAuthCtrl() echo.HandlerFunc {
 		stringPassword := fmt.Sprintf("%x", hash[:])
 		checkedUser, err := uscon.Repo.LoginUser(loginFormat.Email, stringPassword)
 		if err != nil || checkedUser.Email == "" {
-			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		}
 
-		token, err := CreateTokenAuth(checkedUser.ID)
-		if err != nil {
-			return c.JSON(http.StatusNotAcceptable, common.NewStatusNotAcceptable())
-		}
+		token, _ := CreateTokenAuth(checkedUser.ID)
 
 		return c.JSON(http.StatusOK, LoginResponseFormat{
 			Code:    http.StatusOK,

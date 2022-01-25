@@ -16,7 +16,10 @@ func NewUsersRepo(db *gorm.DB) *UserRepository {
 
 func (ur *UserRepository) Gets() ([]entities.User, error) {
 	users := []entities.User{}
-	ur.db.Find(&users)
+
+	if err := ur.db.Find(&users).Error; err != nil {
+		return users, err
+	}
 	return users, nil
 }
 func (ur *UserRepository) LoginUser(email, password string) (entities.User, error) {
