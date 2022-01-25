@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/midtrans/midtrans-go"
-	"github.com/midtrans/midtrans-go/coreapi"
+	// "github.com/midtrans/midtrans-go/coreapi"
 )
 
 type TransactionsController struct {
@@ -64,7 +64,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil {
+		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := UpdateTransactionsResponseFormat{
@@ -77,7 +77,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 	}
 }
 
-var crc coreapi.Client
+// var crc coreapi.Client
 
 func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -90,20 +90,33 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 		if err := c.Bind(&notificationPayload); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-		orderID, exists := notificationPayload["order-id"].(string)
-		if !exists {
-			fmt.Println("not found")
-		}
+		// orderID, exists := notificationPayload["order-id"].(string)
+		// if !exists {
+		// 	fmt.Println("not found")
+		// }
 		fmt.Println("notification", notificationPayload)
+		fmt.Println("len", len(notificationPayload))
+		fmt.Println("invoice", notificationPayload["order_id"].(string))
+		fmt.Println("status", notificationPayload["transaction_status"].(string))
+		if res, err := trrep.Repo.Update(notificationPayload["order_id"].(string), notificationPayload["transaction_status"].(string)); err != nil || res.ID == 0 {
+			fmt.Println("intip res", res)
+			fmt.Println("intip err", err)
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+		}
+		// i:=0
+		// if i!=len(notificationPayload){
 
-		transactionStatusResp, err := crc.CheckTransaction(orderID)
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-		}
-		if transactionStatusResp != nil {
-			trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
-		}
-		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+		// }
+
+		// transactionStatusResp, err := crc.CheckTransaction(orderID)
+		// if err != nil {
+		// 	return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		// }
+		// if transactionStatusResp != nil {
+		//
+		// }
 
 	}
 }
