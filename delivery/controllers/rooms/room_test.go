@@ -92,10 +92,31 @@ func TestUserTrue(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 
 		context := e.NewContext(req, res)
-		context.SetPath("/rooms")
+		context.SetPath("/rooms/:id")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
 
 		roomController := NewRoomsControllers(mockRoomRepository{})
 		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Update())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Successful Operation", response.Message)
+	})
+	t.Run("Test Get My Room", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/room")
+
+		roomController := NewRoomsControllers(mockRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Gets())(context); err != nil {
 			log.Fatal(err)
 			return
 		}
@@ -109,12 +130,15 @@ func TestUserTrue(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 		context := e.NewContext(req, res)
 		context.SetPath("/rooms")
 
 		roomController := NewRoomsControllers(mockRoomRepository{})
-		roomController.Gets()(context)
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Get())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
 		response := GetRoomsResponseFormat{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Successful Operation", response.Message)
@@ -132,6 +156,8 @@ func TestUserTrue(t *testing.T) {
 
 		context := e.NewContext(req, res)
 		context.SetPath("/rooms")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
 
 		roomController := NewRoomsControllers(mockRoomRepository{})
 		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Delete())(context); err != nil {
@@ -148,6 +174,11 @@ func TestUserTrue(t *testing.T) {
 type mockRoomRepository struct{}
 
 func (m mockRoomRepository) Gets(userId int) ([]entities.Room, error) {
+	return []entities.Room{
+		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
+	}, nil
+}
+func (m mockRoomRepository) Get(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, nil
@@ -264,8 +295,9 @@ func TestUserFalse(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 
 		context := e.NewContext(req, res)
-		context.SetPath("/rooms")
-
+		context.SetPath("/rooms/:id")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
 		roomController := NewRoomsControllers(mockFalseRoomRepository{})
 		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Update())(context); err != nil {
 			log.Fatal(err)
@@ -305,27 +337,19 @@ func TestUserFalse(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Bad Request", response.Message)
 	})
-	t.Run("Test Error Get All Room", func(t *testing.T) {
+	t.Run("Test Error Request Update Room", func(t *testing.T) {
 		e := echo.New()
-		req := httptest.NewRequest(http.MethodPut, "/", nil)
-		res := httptest.NewRecorder()
-		req.Header.Set("Content-Type", "application/json")
-
-		context := e.NewContext(req, res)
-		context.SetPath("/rooms")
-
-		roomController := NewRoomsControllers(mockFalseRoomRepository{})
-		roomController.Gets()(context)
-		response := GetRoomsResponseFormat{}
-		json.Unmarshal([]byte(res.Body.Bytes()), &response)
-		assert.Equal(t, "Not Found", response.Message)
-	})
-	t.Run("Test Error  Request Delete Room", func(t *testing.T) {
-		e := echo.New()
-		requestBody, _ := json.Marshal(map[string]interface{}{
-			"room_id": "1",
+		requestBody, _ := json.Marshal(map[string]int{
+			"id":       1,
+			"name":     1,
+			"location": 1,
+			"user_id":  1,
+			"price":    1,
+			"duration": 1,
+			"status":   1,
 		})
-		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(requestBody))
+
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -333,7 +357,66 @@ func TestUserFalse(t *testing.T) {
 
 		context := e.NewContext(req, res)
 		context.SetPath("/rooms")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Update())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Bad Request", response.Message)
+	})
+	t.Run("Test Error Get My Room", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/room")
 
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Gets())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error Get All Room", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/rooms")
+
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Get())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error  Request Delete Room", func(t *testing.T) {
+		e := echo.New()
+
+		req := httptest.NewRequest(http.MethodDelete, "/", nil)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+
+		context := e.NewContext(req, res)
+		context.SetPath("/rooms/:id")
+		context.SetParamNames("id")
+		context.SetParamValues("asd")
 		roomController := NewRoomsControllers(mockFalseRoomRepository{})
 		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Delete())(context); err != nil {
 			log.Fatal(err)
@@ -352,8 +435,9 @@ func TestUserFalse(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 
 		context := e.NewContext(req, res)
-		context.SetPath("/rooms")
-
+		context.SetPath("/rooms/:id")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
 		roomController := NewRoomsControllers(mockFalseRoomRepository{})
 		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Delete())(context); err != nil {
 			log.Fatal(err)
@@ -369,6 +453,11 @@ func TestUserFalse(t *testing.T) {
 type mockFalseRoomRepository struct{}
 
 func (m mockFalseRoomRepository) Gets(userId int) ([]entities.Room, error) {
+	return []entities.Room{
+		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
+	}, errors.New("False Login Object")
+}
+func (m mockFalseRoomRepository) Get(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, errors.New("False Login Object")
