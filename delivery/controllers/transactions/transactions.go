@@ -55,6 +55,7 @@ func (trrep TransactionsController) Get() echo.HandlerFunc {
 	}
 }
 
+//manual parse
 func (trrep TransactionsController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
@@ -63,7 +64,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		if res, err := trrep.Repo.Update(updateRoom.InvoiceID); err != nil {
+		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := UpdateTransactionsResponseFormat{
@@ -94,8 +95,14 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 			fmt.Println("not found")
 		}
 		fmt.Println("notification", notificationPayload)
-		fmt.Println(orderID)
 
+		transactionStatusResp, err := crc.CheckTransaction(orderID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+		if transactionStatusResp != nil {
+			trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
+		}
 		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 
 	}
