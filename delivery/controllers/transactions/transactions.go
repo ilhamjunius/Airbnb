@@ -64,7 +64,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil {
+		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := UpdateTransactionsResponseFormat{
@@ -95,6 +95,8 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 			fmt.Println("not found")
 		}
 		fmt.Println("notification", notificationPayload)
+		fmt.Println("invoice", notificationPayload["order_id"])
+		fmt.Println("status", notificationPayload["transaction_status"])
 
 		transactionStatusResp, err := crc.CheckTransaction(orderID)
 		if err != nil {

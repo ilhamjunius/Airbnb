@@ -30,7 +30,7 @@ func (bkrep BooksController) Get() echo.HandlerFunc {
 		if err := c.Bind(&findBookReq); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-		if res, err := bkrep.Repo.Get(uint(userID), findBookReq.RoomID); err != nil {
+		if res, err := bkrep.Repo.Get(uint(userID), findBookReq.RoomID); err != nil || len(res) == 0 {
 			return c.JSON(http.StatusNotFound, common.NewStatusNotAcceptable())
 		} else {
 			responses := BookingsResponseFormat{
@@ -75,7 +75,7 @@ func (bkrep BooksController) Create() echo.HandlerFunc {
 		newUUID := uuid.New().String()
 		newInvoice := "INV-" + strconv.Itoa(userID) + "/book/" + newUUID
 
-		if res, err := bkrep.Repo.CreateTransactions(uint(userID), newBookReq.RoomID, newInvoice); err != nil {
+		if res, err := bkrep.Repo.CreateTransactions(uint(userID), newBookReq.RoomID, newInvoice); err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := TransactionsResponseFormat{
