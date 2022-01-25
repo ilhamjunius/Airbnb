@@ -25,10 +25,19 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.Room
 	e.GET("/rooms", rmCtrl.Gets())
 	e.PUT("/rooms", rmCtrl.Update(), middleware.JWT([]byte("RAHASIA")))
 	e.DELETE("/rooms", rmCtrl.Delete(), middleware.JWT([]byte("RAHASIA")))
+
 	// ---------------------------------------------------------------------
 	// CRUD Transactions
 	// ---------------------------------------------------------------------
-	e.GET("/transactions", trctrl.Get(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/transactions", trctrl.Gets(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/transactions/order", trctrl.Get(), middleware.JWT([]byte("RAHASIA")))
+	e.POST("/transactions", trctrl.Update())
+
+	// ---------------------------------------------------------------------
+	// CRUD Bookings
+	// ---------------------------------------------------------------------
 	e.POST("/booking", bkCtrl.Create(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/booking", bkCtrl.Get(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/bookings", bkCtrl.Gets(), middleware.JWT([]byte("RAHASIA")))
 
 }

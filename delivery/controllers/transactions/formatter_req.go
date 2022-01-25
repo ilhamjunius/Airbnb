@@ -1,5 +1,5 @@
 package transactions
 
-type GetTransactionsRequestFormat struct {
-	TransactionID int `json:"transactions_id"`
+type UpdateTransactionsRequestFormat struct {
+	InvoiceID string `json:"invoice_id"`
 }
