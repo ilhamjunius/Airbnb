@@ -109,17 +109,12 @@ func TestUserTrue(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		// req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 
 		context := e.NewContext(req, res)
 		context.SetPath("/rooms")
 
 		roomController := NewRoomsControllers(mockRoomRepository{})
 		roomController.Gets()(context)
-		// if err := middleware.JWT([]byte("RAHASIA"))(roomController.Update())(context); err != nil {
-		// 	log.Fatal(err)
-		// 	return
-		// }
 		response := GetRoomsResponseFormat{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Successful Operation", response.Message)
@@ -314,19 +309,13 @@ func TestUserFalse(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodPut, "/", nil)
 		res := httptest.NewRecorder()
-
 		req.Header.Set("Content-Type", "application/json")
-		// req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
 
 		context := e.NewContext(req, res)
 		context.SetPath("/rooms")
 
 		roomController := NewRoomsControllers(mockFalseRoomRepository{})
 		roomController.Gets()(context)
-		// if err := middleware.JWT([]byte("RAHASIA"))(roomController.Update())(context); err != nil {
-		// 	log.Fatal(err)
-		// 	return
-		// }
 		response := GetRoomsResponseFormat{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Not Found", response.Message)
