@@ -21,6 +21,14 @@ func (rr *RoomsRepository) Gets(userId int) ([]entities.Room, error) {
 	}
 	return rooms, nil
 }
+func (rr *RoomsRepository) Get(userId int) ([]entities.Room, error) {
+	rooms := []entities.Room{}
+	if err := rr.db.Not("user_id=?", userId).Find(&rooms).Error; err != nil {
+
+		return rooms, err
+	}
+	return rooms, nil
+}
 
 func (rr *RoomsRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	rr.db.Save(&newRoom)

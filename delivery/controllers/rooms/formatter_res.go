@@ -7,13 +7,13 @@ type GetRoomsResponseFormat struct {
 }
 
 type RoomResponse struct {
-	ID       uint
-	User_id  uint
-	Name     string
-	Location string
-	Price    int
-	Duration int
-	Status   string
+	ID       uint   `json:"id" form:"id"`
+	User_id  uint   `json:"user_id" form:"user_id"`
+	Name     string `json:"name" form:"name"`
+	Location string `json:"location" form:"location"`
+	Price    int    `json:"price" form:"price"`
+	Duration int    `json:"duration" form:"duration"`
+	Status   string `json:"status" form:"status"`
 }
 type UserRequestFormat struct {
 	Email    string `json:"email" form:"email"`
