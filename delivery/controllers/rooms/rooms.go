@@ -52,7 +52,39 @@ func (rrcon RoomsController) Gets() echo.HandlerFunc {
 
 	}
 }
+func (rrcon RoomsController) Get() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userID := int(claims["userid"].(float64))
+		rooms, err := rrcon.Repo.Get(userID)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		}
+		data := []RoomResponse{}
 
+		for _, room := range rooms {
+			data = append(
+				data, RoomResponse{
+					ID:       room.ID,
+					Name:     room.Name,
+					Location: room.Location,
+					Duration: room.Duration,
+					User_id:  room.User_id,
+					Price:    room.Price,
+					Status:   room.Status,
+				},
+			)
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
+
+	}
+}
 func (rrcon RoomsController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uid := c.Get("user").(*jwt.Token)
