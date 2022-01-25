@@ -7,6 +7,8 @@ type Room struct {
 	ID       uint
 	Name     string
 	Location string
+	Duration int
 	User_id  uint
 	Price    int
+	Status   string
 }

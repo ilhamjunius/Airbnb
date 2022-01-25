@@ -1,0 +1,24 @@
+mode: set
+project-airbnb/delivery/controllers/rooms/rooms.go:17.68,19.2 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:21.54,22.36 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:22.36,23.48 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:23.48,25.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:25.9,32.4 2 1
+project-airbnb/delivery/controllers/rooms/rooms.go:36.56,37.36 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:37.36,44.45 5 1
+project-airbnb/delivery/controllers/rooms/rooms.go:48.3,55.72 2 1
+project-airbnb/delivery/controllers/rooms/rooms.go:44.45,46.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:55.72,57.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:57.9,59.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:63.56,64.36 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:64.36,71.45 5 1
+project-airbnb/delivery/controllers/rooms/rooms.go:75.3,82.72 2 1
+project-airbnb/delivery/controllers/rooms/rooms.go:71.45,73.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:82.72,84.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:84.9,91.4 2 1
+project-airbnb/delivery/controllers/rooms/rooms.go:95.56,96.36 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:96.36,102.45 5 1
+project-airbnb/delivery/controllers/rooms/rooms.go:106.3,106.96 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:102.45,104.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:106.96,108.4 1 1
+project-airbnb/delivery/controllers/rooms/rooms.go:108.9,110.4 1 1
