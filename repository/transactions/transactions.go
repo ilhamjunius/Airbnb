@@ -57,5 +57,8 @@ func (tr *TransactionsRepository) Update(invoiceID string) (entities.Transaction
 
 	tr.db.Where("user_id=?", bookUpdate.User_id).Model(&roomUpdate).Updates(newRoom)
 
+	transactionUpdate.Status = "LUNAS"
+	tr.db.Save(&transactionUpdate)
+
 	return transactionUpdate, nil
 }
