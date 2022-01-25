@@ -1,12 +1,15 @@
 package transactions
 
 import (
+	"fmt"
 	"net/http"
 	"project-airbnb/delivery/common"
 	"project-airbnb/repository/transactions"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"github.com/midtrans/midtrans-go"
+	"github.com/midtrans/midtrans-go/coreapi"
 )
 
 type TransactionsController struct {
@@ -52,6 +55,7 @@ func (trrep TransactionsController) Get() echo.HandlerFunc {
 	}
 }
 
+//manual parse
 func (trrep TransactionsController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
@@ -60,7 +64,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 
-		if res, err := trrep.Repo.Update(updateRoom.InvoiceID); err != nil {
+		if res, err := trrep.Repo.Update(updateRoom.InvoiceID, "settlement"); err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := UpdateTransactionsResponseFormat{
@@ -73,12 +77,33 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 	}
 }
 
-// func (trrep TransactionsController)Update()echo.HandlerFunc{
-// 	return func(c echo.Context) error {
-// 		var notificationPayload map[string]interface{}
-// 		if err:=c.Bind(&notificationPayload);err!=nil{
-// 			return c.JSON(http.StatusBadRequest,common.NewBadRequestResponse())
-// 		}
+var crc coreapi.Client
 
-// 	}
-// }
+func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		midtrans.ServerKey = "SB-Mid-server-W-ANVsQXp9S7q65qndszXrcD"
+		midtrans.ClientKey = "SB-Mid-client-QVIZg4p30WL2WLy8"
+		midtrans.Environment = midtrans.Sandbox
+
+		var notificationPayload map[string]interface{}
+		if err := c.Bind(&notificationPayload); err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+		orderID, exists := notificationPayload["order-id"].(string)
+		if !exists {
+			fmt.Println("not found")
+		}
+		fmt.Println("notification", notificationPayload)
+
+		transactionStatusResp, err := crc.CheckTransaction(orderID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		}
+		if transactionStatusResp != nil {
+			trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
+		}
+		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+
+	}
+}

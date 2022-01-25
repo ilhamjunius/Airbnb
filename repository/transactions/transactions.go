@@ -32,33 +32,41 @@ func (tr *TransactionsRepository) Get(userID uint) ([]entities.Transaction, erro
 	return transaction, nil
 }
 
-func (tr *TransactionsRepository) Update(invoiceID string) (entities.Transaction, error) {
+func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Transaction, error) {
 	transactionUpdate := entities.Transaction{}
 	bookUpdate := entities.Book{}
 	roomUpdate := entities.Room{}
 
-	tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
+	if status != "settlement" {
+		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
+		newTransactions := entities.Transaction{
+			Status: status,
+		}
+		tr.db.Where("invoice=?", invoiceID).Model(&transactionUpdate).Updates(newTransactions)
+	} else {
+		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
 
-	tr.db.Where("transaction_id=?", transactionUpdate.ID).Find(&bookUpdate)
+		tr.db.Where("transaction_id=?", transactionUpdate.ID).Find(&bookUpdate)
 
-	tr.db.Where("user_id=?", bookUpdate.User_id).Find(&roomUpdate)
+		tr.db.Where("user_id=?", bookUpdate.User_id).Find(&roomUpdate)
 
-	var now = time.Now()
+		var now = time.Now()
 
-	newBook := entities.Book{
-		Checkin:  fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()),
-		Checkout: fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()+roomUpdate.Duration),
+		newBook := entities.Book{
+			Checkin:  fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()),
+			Checkout: fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()+roomUpdate.Duration),
+		}
+		tr.db.Where("id=?", bookUpdate.ID).Model(&bookUpdate).Updates(newBook)
+
+		newRoom := entities.Room{
+			Status: "CLOSED",
+		}
+
+		tr.db.Where("user_id=?", bookUpdate.User_id).Model(&roomUpdate).Updates(newRoom)
+
+		transactionUpdate.Status = status
+		tr.db.Save(&transactionUpdate)
 	}
-	tr.db.Where("id=?", bookUpdate.ID).Model(&bookUpdate).Updates(newBook)
-
-	newRoom := entities.Room{
-		Status: "CLOSED",
-	}
-
-	tr.db.Where("user_id=?", bookUpdate.User_id).Model(&roomUpdate).Updates(newRoom)
-
-	transactionUpdate.Status = "LUNAS"
-	tr.db.Save(&transactionUpdate)
 
 	return transactionUpdate, nil
 }

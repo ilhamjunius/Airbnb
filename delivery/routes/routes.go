@@ -37,6 +37,7 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.Room
 	e.GET("/transactions", trctrl.Gets(), middleware.JWT([]byte("RAHASIA")))
 	e.GET("/transactions/order", trctrl.Get(), middleware.JWT([]byte("RAHASIA")))
 	e.POST("/transactions", trctrl.Update())
+	e.POST("/transactions/callback", trctrl.UpdateCallBack())
 
 	// ---------------------------------------------------------------------
 	// CRUD Bookings
