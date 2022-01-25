@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/midtrans/midtrans-go"
-	"github.com/midtrans/midtrans-go/coreapi"
+	// "github.com/midtrans/midtrans-go/coreapi"
 )
 
 type TransactionsController struct {
@@ -77,7 +77,7 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 	}
 }
 
-var crc coreapi.Client
+// var crc coreapi.Client
 
 func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -95,15 +95,21 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 		// 	fmt.Println("not found")
 		// }
 		fmt.Println("notification", notificationPayload)
+		fmt.Println("len", len(notificationPayload))
 		fmt.Println("invoice", notificationPayload["order_id"].(string))
 		fmt.Println("status", notificationPayload["transaction_status"].(string))
+		trrep.Repo.Update(notificationPayload["order_id"].(string), notificationPayload["transaction_status"].(string))
+		// i:=0
+		// if i!=len(notificationPayload){
+
+		// }
 
 		// transactionStatusResp, err := crc.CheckTransaction(orderID)
 		// if err != nil {
 		// 	return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
 		// }
 		// if transactionStatusResp != nil {
-		// 	trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
+		//
 		// }
 		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 
