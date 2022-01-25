@@ -5,6 +5,7 @@ import (
 	"project-airbnb/delivery/common"
 	"project-airbnb/entities"
 	"project-airbnb/repository/rooms"
+	"strconv"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -20,16 +21,35 @@ func NewRoomsControllers(ri rooms.RoomsInterface) *RoomsController {
 
 func (rrcon RoomsController) Gets() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if res, err := rrcon.Repo.Gets(); err != nil {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userID := int(claims["userid"].(float64))
+		rooms, err := rrcon.Repo.Gets(userID)
+		if err != nil {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
-		} else {
-			response := GetRoomsResponseFormat{
-				Code:    http.StatusOK,
-				Message: "Successful Operation",
-				Data:    res,
-			}
-			return c.JSON(http.StatusOK, response)
 		}
+		data := []RoomResponse{}
+
+		for _, room := range rooms {
+			data = append(
+				data, RoomResponse{
+					ID:       room.ID,
+					Name:     room.Name,
+					Location: room.Location,
+					Duration: room.Duration,
+					User_id:  room.User_id,
+					Price:    room.Price,
+					Status:   room.Status,
+				},
+			)
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
+
 	}
 }
 
@@ -50,18 +70,37 @@ func (rrcon RoomsController) Create() echo.HandlerFunc {
 			Name:     newRoomReq.Name,
 			Location: newRoomReq.Location,
 			Price:    newRoomReq.Price,
+			Duration: newRoomReq.Duration,
+			Status:   newRoomReq.Status,
 		}
-
-		if res, err := rrcon.Repo.Create(newRoom); err != nil || res.ID == 0 {
+		res, err := rrcon.Repo.Create(newRoom)
+		if err != nil || res.ID == 0 {
 			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-		} else {
-			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 		}
+		data := RoomResponse{
+			ID:       res.ID,
+			Name:     res.Name,
+			Location: res.Location,
+			Duration: res.Duration,
+			User_id:  res.User_id,
+			Price:    res.Price,
+			Status:   res.Status,
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
 
 	}
 }
 func (rrcon RoomsController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		roomId, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		userID := int(claims["userid"].(float64))
@@ -77,36 +116,59 @@ func (rrcon RoomsController) Update() echo.HandlerFunc {
 			Name:     newRoomReq.Name,
 			Location: newRoomReq.Location,
 			Price:    newRoomReq.Price,
+			Duration: newRoomReq.Duration,
+			Status:   newRoomReq.Status,
 		}
-
-		if res, err := rrcon.Repo.Update(newRoom); err != nil || res.ID == 0 {
+		res, err := rrcon.Repo.Update(newRoom, roomId)
+		if err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
-		} else {
-			response := GetRoomsResponseFormat{
-				Code:    http.StatusOK,
-				Message: "Successful Operation",
-				Data:    res,
-			}
-			return c.JSON(http.StatusOK, response)
 		}
+		data := RoomResponse{
+			ID:       res.ID,
+			Name:     res.Name,
+			Location: res.Location,
+			Duration: res.Duration,
+			User_id:  res.User_id,
+			Price:    res.Price,
+			Status:   res.Status,
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
 
 	}
 }
 func (rrcon RoomsController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		roomId, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
 		uid := c.Get("user").(*jwt.Token)
 		claims := uid.Claims.(jwt.MapClaims)
 		userID := int(claims["userid"].(float64))
-
-		delRoomReq := DeleteRoomRequestFormat{}
-		if err := c.Bind(&delRoomReq); err != nil {
-			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
-		}
-
-		if res, err := rrcon.Repo.Delete(delRoomReq.RoomID, uint(userID)); err != nil || res.ID == 0 {
+		res, err := rrcon.Repo.Delete(roomId, uint(userID))
+		if err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
-		} else {
-			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 		}
+		data := RoomResponse{
+			ID:       res.ID,
+			Name:     res.Name,
+			Location: res.Location,
+			Duration: res.Duration,
+			User_id:  res.User_id,
+			Price:    res.Price,
+			Status:   res.Status,
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
+
 	}
 }

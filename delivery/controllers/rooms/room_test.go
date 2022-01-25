@@ -147,7 +147,7 @@ func TestUserTrue(t *testing.T) {
 
 type mockRoomRepository struct{}
 
-func (m mockRoomRepository) Gets() ([]entities.Room, error) {
+func (m mockRoomRepository) Gets(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, nil
@@ -155,7 +155,7 @@ func (m mockRoomRepository) Gets() ([]entities.Room, error) {
 func (m mockRoomRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, nil
 }
-func (m mockRoomRepository) Update(editRoom entities.Room) (entities.Room, error) {
+func (m mockRoomRepository) Update(editRoom entities.Room, roomId int) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, nil
 }
 func (m mockRoomRepository) Delete(roomID int, userID uint) (entities.Room, error) {
@@ -368,7 +368,7 @@ func TestUserFalse(t *testing.T) {
 
 type mockFalseRoomRepository struct{}
 
-func (m mockFalseRoomRepository) Gets() ([]entities.Room, error) {
+func (m mockFalseRoomRepository) Gets(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, errors.New("False Login Object")
@@ -376,7 +376,7 @@ func (m mockFalseRoomRepository) Gets() ([]entities.Room, error) {
 func (m mockFalseRoomRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, errors.New("False Login Object")
 }
-func (m mockFalseRoomRepository) Update(editRoom entities.Room) (entities.Room, error) {
+func (m mockFalseRoomRepository) Update(editRoom entities.Room, roomId int) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, errors.New("False Login Object")
 }
 func (m mockFalseRoomRepository) Delete(roomID int, userID uint) (entities.Room, error) {

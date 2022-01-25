@@ -57,13 +57,13 @@ func TestUsersRepo(t *testing.T) {
 		mockRoom.User_id = 1
 		mockRoom.Status = "Already Booked"
 
-		_, err := roomRepo.Update(mockRoom)
+		_, err := roomRepo.Update(mockRoom, 1)
 		assert.Nil(t, err)
 
 	})
 	t.Run("Get All Room into Database", func(t *testing.T) {
 
-		_, err := roomRepo.Gets()
+		_, err := roomRepo.Gets(1)
 		assert.Nil(t, err)
 
 	})

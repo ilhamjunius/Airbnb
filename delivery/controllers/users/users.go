@@ -164,9 +164,11 @@ func (uscon UsersController) UpdateUserCtrl() echo.HandlerFunc {
 		hash := sha256.Sum256([]byte(updateUserReq.Password))
 		stringPassword := fmt.Sprintf("%x", hash[:])
 		updateUser := entities.User{
-			Email:    updateUserReq.Email,
-			Password: stringPassword,
-			Name:     updateUserReq.Name,
+			Email: updateUserReq.Email,
+			Name:  updateUserReq.Name,
+		}
+		if updateUserReq.Password != "" {
+			updateUser.Password = stringPassword
 		}
 		res, err := uscon.Repo.Update(updateUser, id)
 		if err != nil {
