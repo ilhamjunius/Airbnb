@@ -21,6 +21,20 @@ func TestUsersRepo(t *testing.T) {
 	db.AutoMigrate(&entities.Room{})
 	roomRepo := NewRoomsRepo(db)
 	userRepo := users.NewUsersRepo(db)
+	db.Migrator().DropTable(&entities.Room{})
+	t.Run("Get All My Room into Database", func(t *testing.T) {
+
+		_, err := roomRepo.Gets(100)
+		assert.Error(t, err)
+
+	})
+	t.Run("Get All Room into Database", func(t *testing.T) {
+
+		_, err := roomRepo.Get(100)
+		assert.Error(t, err)
+
+	})
+	db.AutoMigrate(&entities.Room{})
 	t.Run("Insert User into Database", func(t *testing.T) {
 		hash := sha256.Sum256([]byte("ilham123"))
 		password := fmt.Sprintf("%x", hash[:])
@@ -64,6 +78,12 @@ func TestUsersRepo(t *testing.T) {
 	t.Run("Get All Room into Database", func(t *testing.T) {
 
 		_, err := roomRepo.Gets(1)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Get All Room into Database", func(t *testing.T) {
+
+		_, err := roomRepo.Get(100)
 		assert.Nil(t, err)
 
 	})
