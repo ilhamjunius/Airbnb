@@ -90,21 +90,21 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 		if err := c.Bind(&notificationPayload); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
-		orderID, exists := notificationPayload["order-id"].(string)
-		if !exists {
-			fmt.Println("not found")
-		}
+		// orderID, exists := notificationPayload["order-id"].(string)
+		// if !exists {
+		// 	fmt.Println("not found")
+		// }
 		fmt.Println("notification", notificationPayload)
-		fmt.Println("invoice", notificationPayload["order_id"])
-		fmt.Println("status", notificationPayload["transaction_status"])
+		fmt.Println("invoice", notificationPayload["order_id"].(string))
+		fmt.Println("status", notificationPayload["transaction_status"].(string))
 
-		transactionStatusResp, err := crc.CheckTransaction(orderID)
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
-		}
-		if transactionStatusResp != nil {
-			trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
-		}
+		// transactionStatusResp, err := crc.CheckTransaction(orderID)
+		// if err != nil {
+		// 	return c.JSON(http.StatusInternalServerError, common.NewInternalServerErrorResponse())
+		// }
+		// if transactionStatusResp != nil {
+		// 	trrep.Repo.Update(orderID, transactionStatusResp.TransactionStatus)
+		// }
 		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 
 	}
