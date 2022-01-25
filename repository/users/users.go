@@ -16,7 +16,10 @@ func NewUsersRepo(db *gorm.DB) *UserRepository {
 
 func (ur *UserRepository) Gets() ([]entities.User, error) {
 	users := []entities.User{}
-	ur.db.Find(&users)
+
+	if err := ur.db.Find(&users).Error; err != nil {
+		return users, err
+	}
 	return users, nil
 }
 func (ur *UserRepository) LoginUser(email, password string) (entities.User, error) {
@@ -35,4 +38,30 @@ func (ur *UserRepository) Register(newUser entities.User) (entities.User, error)
 		return newUser, err
 	}
 	return newUser, nil
+}
+func (ur *UserRepository) Delete(userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
+		return user, err
+	}
+	ur.db.Delete(&user)
+
+	return user, nil
+}
+func (ur *UserRepository) Update(newUser entities.User, userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, "id=?", userId).Error; err != nil {
+		return user, err
+	}
+
+	ur.db.Model(&user).Updates(newUser)
+
+	return user, nil
+}
+func (ur *UserRepository) Get(userId int) (entities.User, error) {
+	user := entities.User{}
+	if err := ur.db.First(&user, userId).Error; err != nil {
+		return user, err
+	}
+	return user, nil
 }

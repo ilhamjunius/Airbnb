@@ -17,7 +17,9 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.Room
 	e.GET("/users", uctrl.GetUsersCtrl())
 	e.POST("/login", uctrl.LoginAuthCtrl())
 	e.POST("/register", uctrl.RegisterUserCtrl())
-
+	e.DELETE("/users", uctrl.DeleteUserCtrl(), middleware.JWT([]byte("RAHASIA")))
+	e.PUT("/users", uctrl.UpdateUserCtrl(), middleware.JWT([]byte("RAHASIA")))
+	e.GET("/user", uctrl.GetUserByIdCtrl(), middleware.JWT([]byte("RAHASIA")))
 	// ---------------------------------------------------------------------
 	// CRUD Rooms
 	// ---------------------------------------------------------------------

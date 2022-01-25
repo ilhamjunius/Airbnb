@@ -7,7 +7,7 @@ type User struct {
 	ID       uint
 	Name     string
 	Email    string `gorm:"unique"`
-	Password string `gorm:"->:false;<-:create"`
+	Password string
 	Room     []Room
 	Book     []Book
 }
