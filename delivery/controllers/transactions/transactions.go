@@ -98,7 +98,13 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 		fmt.Println("len", len(notificationPayload))
 		fmt.Println("invoice", notificationPayload["order_id"].(string))
 		fmt.Println("status", notificationPayload["transaction_status"].(string))
-		trrep.Repo.Update(notificationPayload["order_id"].(string), notificationPayload["transaction_status"].(string))
+		if res, err := trrep.Repo.Update(notificationPayload["order_id"].(string), notificationPayload["transaction_status"].(string)); err != nil || res.ID == 0 {
+			fmt.Println("intip res", res)
+			fmt.Println("intip err", err)
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+		}
 		// i:=0
 		// if i!=len(notificationPayload){
 
@@ -111,7 +117,6 @@ func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 		// if transactionStatusResp != nil {
 		//
 		// }
-		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
 
 	}
 }
