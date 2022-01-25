@@ -38,15 +38,11 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 	roomUpdate := entities.Room{}
 
 	if status != "settlement" {
-		if status != "pending" {
-
-		} else {
-			tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
-			newTransactions := entities.Transaction{
-				Status: status,
-			}
-			tr.db.Where("invoice=?", invoiceID).Model(&transactionUpdate).Updates(newTransactions)
+		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
+		newTransactions := entities.Transaction{
+			Status: status,
 		}
+		tr.db.Where("invoice=?", invoiceID).Model(&transactionUpdate).Updates(newTransactions)
 	} else {
 		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
 
