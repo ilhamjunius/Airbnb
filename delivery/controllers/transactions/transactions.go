@@ -1,12 +1,15 @@
 package transactions
 
 import (
+	"fmt"
 	"net/http"
 	"project-airbnb/delivery/common"
 	"project-airbnb/repository/transactions"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"github.com/midtrans/midtrans-go"
+	"github.com/midtrans/midtrans-go/coreapi"
 )
 
 type TransactionsController struct {
@@ -73,12 +76,27 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 	}
 }
 
-// func (trrep TransactionsController)Update()echo.HandlerFunc{
-// 	return func(c echo.Context) error {
-// 		var notificationPayload map[string]interface{}
-// 		if err:=c.Bind(&notificationPayload);err!=nil{
-// 			return c.JSON(http.StatusBadRequest,common.NewBadRequestResponse())
-// 		}
+var crc coreapi.Client
 
-// 	}
-// }
+func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		midtrans.ServerKey = "SB-Mid-server-W-ANVsQXp9S7q65qndszXrcD"
+		midtrans.ClientKey = "SB-Mid-client-QVIZg4p30WL2WLy8"
+		midtrans.Environment = midtrans.Sandbox
+
+		var notificationPayload map[string]interface{}
+		if err := c.Bind(&notificationPayload); err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+		orderID, exists := notificationPayload["order-id"].(string)
+		if !exists {
+			fmt.Println("not found")
+		}
+		fmt.Println("notification", notificationPayload)
+		fmt.Println(orderID)
+
+		return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+
+	}
+}
