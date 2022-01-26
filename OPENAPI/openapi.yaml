@@ -1,0 +1,621 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Airbnb RESTful
+  description: AirBnb Endpoint List
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/herlianto7/Airbnb-v1/1.0.0
+  - description: Production Server
+    url: https://herlianto-github.cloud.okteto.net
+  - description: Demo Server
+    url: http://18.136.199.65
+  - description: Testing Server
+    url: https://localhost:8000
+paths:
+  /register:
+    post:
+      summary: Register User
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/UsersSchemaRegister'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Register'              
+        '400':
+          $ref: '#/components/responses/Response400'
+        '500':
+          $ref: '#/components/responses/Response500'                    
+  /login:
+    post:
+      summary: Login User
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersSchemaLogin'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Login'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'   
+  /users:
+    get:
+      summary: Get All Users
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllUsers'  
+        '500':
+          $ref: '#/components/responses/Response500'     
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update User By ID
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersSchemaUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200UserUpdate'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'            
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'  
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete User By ID
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200UserUpdate'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'            
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'   
+  
+  /rooms:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create Rooms
+      tags:
+        - Rooms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomsSchemaCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200RoomsCreate'
+        '400':
+          $ref: '#/components/responses/Response400'        
+        '500':
+          $ref: '#/components/responses/Response500'    
+    get:
+      security:
+        - bearerAuth: []
+      summary: Show All Rooms
+      tags:
+        - Rooms
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllRooms'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'
+  /room:
+     get:
+      security:
+        - bearerAuth: []
+      summary: Show My Rooms
+      tags:
+        - Rooms
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200RoomsCreate'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'
+  /rooms/{id}:
+     put:
+      security:
+        - bearerAuth: []
+      summary: Update MyRoom By Room ID
+      tags:
+        - Rooms
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomsSchemaUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200RoomsUpdate'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '404':
+          $ref: '#/components/responses/Response404'
+     delete:
+      security:
+        - bearerAuth: []
+      summary: Delete MyRoom By Room ID
+      tags:
+        - Rooms
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200RoomsUpdate'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '404':
+          $ref: '#/components/responses/Response404'
+
+  /bookings:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create Booking Rooms
+      tags:
+        - Bookings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BooksSchemaCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200BooksCreate'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500' 
+    get:
+      security:
+        - bearerAuth: []
+      summary: Show All Booked Rooms
+      tags:
+        - Bookings      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllBooks'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'           
+
+  /transactions:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Show All My Transactions
+      tags:
+        - Transactions      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllTransactions'                
+        '500':
+          $ref: '#/components/responses/Response500'        
+  /transactions/order:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Show All My Pending Transactions
+      tags:
+        - Transactions      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllTransactions'                
+        '500':
+          $ref: '#/components/responses/Response500'  
+components:
+  securitySchemes:
+    bearerAuth:           
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing or Malformed JWT     
+    Response200:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Successful Operation
+    Response200Register:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                id: 1
+                name: "herlianto"
+                email: herlianto@outlook.my               
+    Response200Login:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              token:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              token: "eyJhbGciOiJIzI1NiIsInR5cCI6IkpXVCJ9"                                   
+    Response200UserUpdate:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                id: 3
+                name: "harimau"
+                email: harimau@outlook.my                                                                               
+    Response200AllUsers:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              token:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                - id: 1
+                  name: "herlianto"
+                  email: "herlianto@outlook.my"
+                - id: 2
+                  name: "ilham"
+                  email: ilham@outlook.my                        
+                - id: 3
+                  name: "kucing"
+                  email: kucing@outlook.my            
+    Response200RoomsCreate:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                id: 1
+                user_id: 1
+                name: Room 1
+                location: Jakarta
+                price: 500000
+                duration: 5
+                status: Open
+    Response200AllRooms:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: []                     
+    Response200RoomsUpdate:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                id: 1
+                user_id: 1
+                name: Room Mawar
+                location: Jakarta
+                price: 600000
+                duration: 6
+                status: Open                
+    Response200BooksCreate:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: "https://app.sandbox.midtrans.com/snap/v2/vtweb/724af021"                
+    Response200AllBooks:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                CreateAt: 
+                UpdateAt:
+                DeleteAt:
+                ID: 1
+                User_id: 2
+                Room_id: 1
+                Checkin: ""
+                Checkout: ""
+                Transaction_id: 1
+    Response200AllTransactions:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                CreateAt: 
+                UpdateAt:
+                DeleteAt:
+                ID: 1
+                Invoice: INV-1/book/
+                Status: Pending
+                Url: https://app.sandbox.midtrans.com/snap/v2/vtweb/7
+    Response400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Bad Request
+    Response404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 404
+              message:
+                type: string
+                example: Not Found
+    Response500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 500
+              message:
+                type: string
+                example: Internal Server Error            
+
+  schemas:
+    UsersSchemaRegister:
+      type: object
+      properties:
+        name:
+          type: string
+          example: herlianto
+        email:
+          type: string
+          example: herlianto@outlook.my
+        password:
+          type: string
+          example: herlianto123            
+    UsersSchemaLogin:
+        type: object
+        properties:
+          email:
+            type: string
+            example: herlianto@outlook.my                  
+          password:
+            type: string
+            example: herlianto123   
+    UsersSchemaUpdate:
+        type: object
+        properties:   
+          name:
+            type: string
+            example: ilham
+          email:
+            type: string
+            example: ilham@outlook.my         
+          password:
+            type: string
+            example: ilham123     
+    RoomsSchemaCreate:
+        type: object
+        properties:   
+          name:
+            type: string
+            example: Room 1
+          location:
+            type: string
+            example: Jakarta        
+          price:
+            type: integer
+            example: 500000
+          duration:
+            type: integer
+            example: 5   
+    RoomsSchemaUpdate:
+        type: object
+        properties:   
+          name:
+            type: string
+            example: Room Mawar
+          location:
+            type: string
+            example: Jakarta        
+          price:
+            type: integer
+            example: 600000
+          duration:
+            type: integer
+            example: 6
+          status:
+            type: string
+            example: Open   
+    BooksSchemaCreate:
+        type: object
+        properties:   
+          room_id:
+            type: integer
+            example: 1          
