@@ -45,13 +45,10 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 		tr.db.Where("invoice=?", invoiceID).Model(&transactionUpdate).Updates(newTransactions)
 	} else {
 		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
-
 		tr.db.Where("transaction_id=?", transactionUpdate.ID).Find(&bookUpdate)
-
-		tr.db.Where("user_id=?", bookUpdate.User_id).Find(&roomUpdate)
+		tr.db.Where("id=?", bookUpdate.Room_id).Find(&roomUpdate)
 
 		var now = time.Now()
-
 		newBook := entities.Book{
 			Checkin:  fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()),
 			Checkout: fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()+roomUpdate.Duration),
@@ -61,8 +58,7 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 		newRoom := entities.Room{
 			Status: "CLOSED",
 		}
-
-		tr.db.Where("user_id=?", bookUpdate.User_id).Model(&roomUpdate).Updates(newRoom)
+		tr.db.Where("id=?", bookUpdate.Room_id).Model(&roomUpdate).Updates(newRoom)
 
 		transactionUpdate.Status = status
 		tr.db.Save(&transactionUpdate)
