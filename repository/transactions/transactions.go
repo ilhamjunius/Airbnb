@@ -53,13 +53,11 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 		checkin, _ := time.Parse("2006-Jan-02", date)
 
 		checkout := checkin.AddDate(0, 0, +roomUpdate.Duration)
-		fmt.Println(checkout)
 		newBook := entities.Book{
 			Checkin:  checkin.String(),
 			Checkout: checkout.String(),
 		}
 		tr.db.Where("id=?", bookUpdate.ID).Model(&bookUpdate).Updates(newBook)
-		fmt.Println(newBook)
 		newRoom := entities.Room{
 			Status: "CLOSED",
 		}

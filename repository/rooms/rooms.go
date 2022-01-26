@@ -23,7 +23,7 @@ func (rr *RoomsRepository) Gets(userId int) ([]entities.Room, error) {
 }
 func (rr *RoomsRepository) Get(userId int) ([]entities.Room, error) {
 	rooms := []entities.Room{}
-	if err := rr.db.Not("user_id=?", userId).Find(&rooms).Error; err != nil {
+	if err := rr.db.Not("user_id=?", userId).Not("status=?", "CLOSED").Find(&rooms).Error; err != nil {
 
 		return rooms, err
 	}
