@@ -21,6 +21,14 @@ func (rr *RoomsRepository) Gets(userId int) ([]entities.Room, error) {
 	}
 	return rooms, nil
 }
+func (rr *RoomsRepository) GetsById(userId, roomId int) (entities.Room, error) {
+	room := entities.Room{}
+	if err := rr.db.Where("user_id=? and id=?", userId, roomId).First(&room).Error; err != nil {
+		return room, err
+	}
+	return room, nil
+}
+
 func (rr *RoomsRepository) Get(userId int) ([]entities.Room, error) {
 	rooms := []entities.Room{}
 	if err := rr.db.Not("user_id=?", userId).Not("status=?", "CLOSED").Find(&rooms).Error; err != nil {
@@ -29,7 +37,14 @@ func (rr *RoomsRepository) Get(userId int) ([]entities.Room, error) {
 	}
 	return rooms, nil
 }
+func (rr *RoomsRepository) GetById(userId, roomId int) (entities.Room, error) {
+	room := entities.Room{}
+	if err := rr.db.Where("id=?", roomId).Not("user_id=?", userId).Not("status=?", "CLOSED").First(&room).Error; err != nil {
 
+		return room, err
+	}
+	return room, nil
+}
 func (rr *RoomsRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	rr.db.Save(&newRoom)
 	return newRoom, nil

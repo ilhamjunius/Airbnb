@@ -26,7 +26,9 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.Room
 	// ---------------------------------------------------------------------
 	e.POST("/rooms", rmCtrl.Create(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.GET("/myrooms", rmCtrl.Gets(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
+	e.GET("/myrooms/:id", rmCtrl.GetsById(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.GET("/rooms", rmCtrl.Get(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
+	e.GET("/rooms/:id", rmCtrl.GetById(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.PUT("/rooms/:id", rmCtrl.Update(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.DELETE("/rooms/:id", rmCtrl.Delete(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	// ---------------------------------------------------------------------
