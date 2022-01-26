@@ -6,7 +6,7 @@ info:
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/herlianto7/Airbnb/1.0.0
+    url: https://virtserver.swaggerhub.com/herlianto7/Airbnb-v1/1.0.0
   - description: Production Server
     url: https://herlianto-github.cloud.okteto.net
   - description: Demo Server
@@ -248,7 +248,18 @@ paths:
           $ref: '#/components/responses/Response200AllTransactions'                
         '500':
           $ref: '#/components/responses/Response500'        
-
+  /transactions/order:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Show All My Pending Transactions
+      tags:
+        - Transactions      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllTransactions'                
+        '500':
+          $ref: '#/components/responses/Response500'  
 components:
   securitySchemes:
     bearerAuth:           
