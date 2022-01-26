@@ -1,0 +1,352 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Airbnb RESTful
+  description: AirBnb Endpoint List
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/herlianto7/Airbnb/1.0.0
+  - description: Production Server
+    url: https://herlianto-github.cloud.okteto.net
+  - description: Demo Server
+    url: http://18.136.199.65
+  - description: Testing Server
+    url: https://localhost:8000
+paths:
+  /register:
+    post:
+      summary: Register User
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/UsersSchemaRegister1'
+                - $ref: '#/components/schemas/UsersSchemaRegister2'             
+                - $ref: '#/components/schemas/UsersSchemaRegister3'  
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Register'               
+        '400':
+          $ref: '#/components/responses/Response400'
+        '500':
+          $ref: '#/components/responses/Response500'                    
+  /login:
+    post:
+      summary: Login User
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/UsersSchemaLogin1'  
+                - $ref: '#/components/schemas/UsersSchemaLogin2'         
+                - $ref: '#/components/schemas/UsersSchemaLogin3'  
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Login'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'   
+  /users:
+    get:
+      summary: Get All Users
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllUsers'  
+        '500':
+          $ref: '#/components/responses/Response500'     
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update User By ID
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersSchemaUpdate3'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Update'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'            
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'  
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete User By ID
+      tags:
+        - Users
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200Update'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'            
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'                          
+           
+components:
+  securitySchemes:
+    bearerAuth:           
+      type: http
+      scheme: bearer
+      bearerFormat: JWT   
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Missing or Malformed JWT     
+    Response200:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              message:
+                type: string
+                example: Successful Operation
+    Response200Register:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - type: object
+                properties:
+                  code:
+                    type: number                
+                  message:
+                    type: string                
+                  data:
+                    type: string
+                example:
+                  code: 200
+                  message: "Successful Operation"                 
+                  data: 
+                    id: 1
+                    name: "herlianto"
+                    email: herlianto@outlook.my  
+              - type: object
+                properties:
+                  code:
+                    type: number                
+                  message:
+                    type: string                
+                  data:
+                    type: string
+                example:
+                  code: 200
+                  message: "Successful Operation"                 
+                  data: 
+                    id: 2
+                    name: "ilham"
+                    email: ilham@outlook.my   
+    Response200Update:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                id: 3
+                name: "harimau"
+                email: harimau@outlook.my                                                                               
+    Response200Login:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              token:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              token: "eyJhbGciOiJIzI1NiIsInR5cCI6IkpXVCJ9"
+    Response200AllUsers:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              token:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                - id: 1
+                  name: "herlianto"
+                  email: "herlianto@outlook.my"
+                - id: 2
+                  name: "ilham"
+                  email: ilham@outlook.my                        
+                - id: 3
+                  name: "kucing"
+                  email: kucing@outlook.my                   
+
+    Response400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              message:
+                type: string
+                example: Bad Request
+    Response404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 404
+              message:
+                type: string
+                example: Not Found
+    Response500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 500
+              message:
+                type: string
+                example: Internal Server Error            
+  schemas:
+    UsersSchemaRegister1:
+      type: object
+      properties:
+        name:
+          type: string
+          example: herlianto
+        email:
+          type: string
+          example: herlianto@outlook.my
+        password:
+          type: string
+          example: herlianto123
+    UsersSchemaRegister2:
+      type: object
+      properties:
+        name:
+          type: string
+          example: ilham
+        email:
+          type: string
+          example: ilham@outlook.my
+        password:
+          type: string
+          example: ilham123
+    UsersSchemaRegister3:
+      type: object
+      properties:
+        name:
+          type: string
+          example: harimau
+        email:
+          type: string
+          example: harimau@outlook.my
+        password:
+          type: string
+          example: harimau123          
+    UsersSchemaLogin1:
+        type: object
+        properties:
+          email:
+            type: string
+            example: herlianto@outlook.my                  
+          password:
+            type: string
+            example: herlianto123
+    UsersSchemaLogin2:
+        type: object
+        properties:          
+          email:
+            type: string
+            example: ilham@outlook.my  
+          password:
+            type: string
+            example: ilham123
+    UsersSchemaLogin3:
+        type: object
+        properties:   
+          email:
+            type: string
+            example: kucing@outlook.my         
+          password:
+            type: string
+            example: kucing123
+    UsersSchemaUpdate3:
+        type: object
+        properties:   
+          name:
+            type: string
+            example: harimau
+          email:
+            type: string
+            example: harimau@outlook.my         
+          password:
+            type: string
+            example: harimau123            
