@@ -38,10 +38,6 @@ func (br *BooksRepository) Create(newBooking entities.Book) (entities.Book, erro
 
 func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error) {
 
-	midtrans.ServerKey = "SB-Mid-server-W-ANVsQXp9S7q65qndszXrcD"
-	midtrans.ClientKey = "SB-Mid-client-QVIZg4p30WL2WLy8"
-	midtrans.Environment = midtrans.Sandbox
-
 	room := entities.Room{}
 	tr.db.Where("id=?", roomID).Find(&room)
 
