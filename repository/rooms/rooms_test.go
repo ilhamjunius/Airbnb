@@ -1,8 +1,11 @@
 package rooms
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"project-airbnb/configs"
 	"project-airbnb/entities"
+	"project-airbnb/repository/users"
 	"project-airbnb/utils"
 	"testing"
 
@@ -28,11 +31,17 @@ func TestUsersRepo(t *testing.T) {
 	db.AutoMigrate(&entities.User{})
 	db.AutoMigrate(&entities.Room{})
 	roomRepo := NewRoomsRepo(db)
-	// userRepo := users.NewUsersRepo(db)
+	userRepo := users.NewUsersRepo(db)
 	db.Migrator().DropTable(&entities.Room{})
 	t.Run("Get All My Room into Database", func(t *testing.T) {
 
 		_, err := roomRepo.Gets(100)
+		assert.Error(t, err)
+
+	})
+	t.Run("Get All My Room into Database", func(t *testing.T) {
+
+		_, err := roomRepo.GetsById(100, 100)
 		assert.Error(t, err)
 
 	})
@@ -42,19 +51,25 @@ func TestUsersRepo(t *testing.T) {
 		assert.Error(t, err)
 
 	})
+	t.Run("Get All Room into Database", func(t *testing.T) {
+
+		_, err := roomRepo.GetById(100, 100)
+		assert.Error(t, err)
+
+	})
 	db.AutoMigrate(&entities.Room{})
-	// t.Run("Insert User into Database", func(t *testing.T) {
-	// 	hash := sha256.Sum256([]byte("ilham123"))
-	// 	password := fmt.Sprintf("%x", hash[:])
-	// 	var mockUser entities.User
-	// 	mockUser.Email = "ilham@yahoo.com"
-	// 	mockUser.Password = password
-	// 	mockUser.Name = "ilham"
+	t.Run("Insert User into Database", func(t *testing.T) {
+		hash := sha256.Sum256([]byte("ilham123"))
+		password := fmt.Sprintf("%x", hash[:])
+		var mockUser entities.User
+		mockUser.Email = "ilham@yahoo.com"
+		mockUser.Password = password
+		mockUser.Name = "ilham"
 
-	// 	_, err := userRepo.Register(mockUser)
-	// 	assert.Nil(t, err)
+		_, err := userRepo.Register(mockUser)
+		assert.Nil(t, err)
 
-	// })
+	})
 	t.Run("Insert Room into Database", func(t *testing.T) {
 
 		var mockRoom entities.Room
@@ -83,15 +98,27 @@ func TestUsersRepo(t *testing.T) {
 		assert.Nil(t, err)
 
 	})
-	t.Run("Get All Room into Database", func(t *testing.T) {
+	t.Run("Get All Room", func(t *testing.T) {
 
 		_, err := roomRepo.Gets(1)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Get All Room By Room Id", func(t *testing.T) {
+
+		_, err := roomRepo.GetsById(1, 1)
 		assert.Nil(t, err)
 
 	})
 	t.Run("Get All Room into Database", func(t *testing.T) {
 
 		_, err := roomRepo.Get(100)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Get All Room By Id", func(t *testing.T) {
+
+		_, err := roomRepo.GetById(2, 1)
 		assert.Nil(t, err)
 
 	})
