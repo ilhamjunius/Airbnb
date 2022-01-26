@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"project-airbnb/configs"
 	"project-airbnb/delivery/controllers/users"
 	"project-airbnb/entities"
 	"testing"
@@ -17,6 +18,13 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestMain(m *testing.M) {
+	config := configs.GetConfig()
+	fmt.Print(config)
+	m.Run()
+
+}
 
 var jwtToken string
 
