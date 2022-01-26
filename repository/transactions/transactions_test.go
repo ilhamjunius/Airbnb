@@ -14,6 +14,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+
+	m.Run()
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	db.Migrator().DropTable(&entities.User{})
+	db.Migrator().DropTable(&entities.Room{})
+	db.Migrator().DropTable(&entities.Transaction{})
+	db.Migrator().DropTable(&entities.Book{})
+
+}
 func TestTransactionsRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)

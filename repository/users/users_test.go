@@ -11,13 +11,27 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+
+	m.Run()
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	db.Migrator().DropTable(&entities.User{})
+
+}
 func TestUsersRepo(t *testing.T) {
+
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	db.Migrator().DropTable(&entities.User{})
 
 	db.AutoMigrate(&entities.User{})
 	userRepo := NewUsersRepo(db)
+	t.Run("Select All User from Database", func(t *testing.T) {
+		_, err := userRepo.Gets()
+		assert.Error(t, err)
+
+	})
 	db.Migrator().DropTable(&entities.User{})
 	t.Run("Insert User into Database", func(t *testing.T) {
 		hash := sha256.Sum256([]byte("ilham123"))
@@ -31,11 +45,7 @@ func TestUsersRepo(t *testing.T) {
 		assert.Error(t, err)
 
 	})
-	t.Run("Select All User from Database", func(t *testing.T) {
-		_, err := userRepo.Gets()
-		assert.Error(t, err)
 
-	})
 	db.AutoMigrate(&entities.User{})
 	t.Run("Insert User into Database", func(t *testing.T) {
 		hash := sha256.Sum256([]byte("ilham123"))
