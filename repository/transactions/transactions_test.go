@@ -1,10 +1,11 @@
-package books
+package transactions
 
 import (
 	"crypto/sha256"
 	"fmt"
 	"project-airbnb/configs"
 	"project-airbnb/entities"
+	"project-airbnb/repository/books"
 	"project-airbnb/repository/rooms"
 	"project-airbnb/repository/users"
 	"project-airbnb/utils"
@@ -13,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBookingRepo(t *testing.T) {
+func TestTransactionsRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
 	db.Migrator().DropTable(&entities.User{})
@@ -25,8 +26,8 @@ func TestBookingRepo(t *testing.T) {
 	db.AutoMigrate(&entities.Transaction{})
 	db.AutoMigrate(&entities.Book{})
 
-	// transactionRepo := transactions.NewTransactionsRepo(db)
-	bookingRepo := NewBooksRepo(db)
+	transactionRepo := NewTransactionsRepo(db)
+	bookingRepo := books.NewBooksRepo(db)
 	userRepo := users.NewUsersRepo(db)
 	roomRepo := rooms.NewRoomsRepo(db)
 	t.Run("Insert User into Database", func(t *testing.T) {
@@ -85,22 +86,42 @@ func TestBookingRepo(t *testing.T) {
 		assert.Nil(t, err)
 
 	})
-	t.Run("Insert Booking into Database", func(t *testing.T) {
-
-		_, err := bookingRepo.Get(2, 1)
+	t.Run("insert Transactions Database", func(t *testing.T) {
+		invoice := "INV-2/book/41a74c38-2880-4d91-8875-f8f0f06a641c"
+		status := "settlement"
+		_, err := transactionRepo.Update(invoice, status)
 		assert.Nil(t, err)
 
 	})
-	t.Run("Show Booking into Database", func(t *testing.T) {
-
-		_, err := bookingRepo.Gets(2)
+	t.Run("insert Transactions Database", func(t *testing.T) {
+		invoice := "INV-2/book/41a74c38-2880-4d91-8875-f8f0f06a641c"
+		status := "bukansettlement"
+		_, err := transactionRepo.Update(invoice, status)
 		assert.Nil(t, err)
 
 	})
-	t.Run("Update Booking", func(t *testing.T) {
-		_, err := bookingRepo.Update(2)
+	t.Run("Get All Transaction Database", func(t *testing.T) {
+
+		_, err := transactionRepo.Get(2)
 		assert.Nil(t, err)
 
 	})
+	t.Run("Get All Transaction Database", func(t *testing.T) {
 
+		_, err := transactionRepo.Gets(2)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Get All Transaction Database", func(t *testing.T) {
+
+		_, err := transactionRepo.Get(1)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Get All Transaction Database", func(t *testing.T) {
+
+		_, err := transactionRepo.Gets(1)
+		assert.Nil(t, err)
+
+	})
 }
