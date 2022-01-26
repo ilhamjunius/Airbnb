@@ -1,17 +1,25 @@
 package rooms
 
 import (
-	"crypto/sha256"
-	"fmt"
 	"project-airbnb/configs"
 	"project-airbnb/entities"
-	"project-airbnb/repository/users"
 	"project-airbnb/utils"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+
+	m.Run()
+	config := configs.GetConfig()
+	db := utils.InitDB(config)
+	db.Migrator().DropTable(&entities.Room{})
+	db.Migrator().DropTable(&entities.User{})
+	db.AutoMigrate(&entities.User{})
+	db.AutoMigrate(&entities.Room{})
+
+}
 func TestUsersRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
@@ -20,7 +28,7 @@ func TestUsersRepo(t *testing.T) {
 	db.AutoMigrate(&entities.User{})
 	db.AutoMigrate(&entities.Room{})
 	roomRepo := NewRoomsRepo(db)
-	userRepo := users.NewUsersRepo(db)
+	// userRepo := users.NewUsersRepo(db)
 	db.Migrator().DropTable(&entities.Room{})
 	t.Run("Get All My Room into Database", func(t *testing.T) {
 
@@ -35,18 +43,18 @@ func TestUsersRepo(t *testing.T) {
 
 	})
 	db.AutoMigrate(&entities.Room{})
-	t.Run("Insert User into Database", func(t *testing.T) {
-		hash := sha256.Sum256([]byte("ilham123"))
-		password := fmt.Sprintf("%x", hash[:])
-		var mockUser entities.User
-		mockUser.Email = "ilham@yahoo.com"
-		mockUser.Password = password
-		mockUser.Name = "ilham"
+	// t.Run("Insert User into Database", func(t *testing.T) {
+	// 	hash := sha256.Sum256([]byte("ilham123"))
+	// 	password := fmt.Sprintf("%x", hash[:])
+	// 	var mockUser entities.User
+	// 	mockUser.Email = "ilham@yahoo.com"
+	// 	mockUser.Password = password
+	// 	mockUser.Name = "ilham"
 
-		_, err := userRepo.Register(mockUser)
-		assert.Nil(t, err)
+	// 	_, err := userRepo.Register(mockUser)
+	// 	assert.Nil(t, err)
 
-	})
+	// })
 	t.Run("Insert Room into Database", func(t *testing.T) {
 
 		var mockRoom entities.Room

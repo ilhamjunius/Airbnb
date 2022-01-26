@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"project-airbnb/configs"
+	"project-airbnb/delivery/common"
 	"project-airbnb/delivery/controllers/users"
 	"project-airbnb/entities"
 	"testing"
@@ -20,7 +22,14 @@ import (
 
 var jwtToken string
 
+func TestMain(m *testing.M) {
+	config := configs.GetConfig()
+	fmt.Print(config)
+	m.Run()
+
+}
 func TestUserTrue(t *testing.T) {
+
 	t.Run("Test Login", func(t *testing.T) {
 		e := echo.New()
 
@@ -65,7 +74,7 @@ func TestUserTrue(t *testing.T) {
 		context.SetPath("/rooms")
 
 		roomController := NewRoomsControllers(mockRoomRepository{})
-		if err := middleware.JWT([]byte("RAHASIA"))(roomController.Create())(context); err != nil {
+		if err := middleware.JWT([]byte(common.JWT_SECRET_KEY))(roomController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
 		}
