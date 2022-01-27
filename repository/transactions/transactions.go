@@ -17,6 +17,11 @@ func NewTransactionsRepo(db *gorm.DB) *TransactionsRepository {
 	return &TransactionsRepository{db: db}
 }
 
+func (tr *TransactionsRepository) Create(newTransaction entities.Transaction) (entities.Transaction, error) {
+	tr.db.Save(&newTransaction)
+	return newTransaction, nil
+}
+
 func (tr *TransactionsRepository) Gets(userID uint) ([]entities.Transaction, error) {
 	transaction := []entities.Transaction{}
 	bookings := []entities.Book{}
