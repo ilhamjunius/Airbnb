@@ -79,12 +79,13 @@ func (trrep TransactionsController) Update() echo.HandlerFunc {
 func (trrep TransactionsController) UpdateCallBack() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		var notificationPayload map[string]interface{}
+		var notificationPayload PayloadRequestFormat
 		if err := c.Bind(&notificationPayload); err != nil {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
+		fmt.Println("payloadnya:", notificationPayload)
 		fmt.Println("=====> NOTIFICATION CALLBACK <=====", notificationPayload)
-		if res, err := trrep.Repo.Update(notificationPayload["order_id"].(string), notificationPayload["transaction_status"].(string)); err != nil || res.ID == 0 {
+		if res, err := trrep.Repo.Update(notificationPayload.OrderId, notificationPayload.TransactionStatus); err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())

@@ -11,7 +11,7 @@ type Room struct {
 	Duration   int `gorm:"not null"`
 	User_id    uint
 	Price      int
-	Status     string `gorm:"default:Open"`
+	Status     string `gorm:"default:OPEN"`
 	Desciption string
 	Book       []Book
 }
