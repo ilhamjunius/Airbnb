@@ -1,10 +1,719 @@
 {
 	"info": {
-		"_postman_id": "c63640a5-131e-446e-83a4-0ef014a1a766",
+		"_postman_id": "9f5c5027-3726-42d3-8711-789b9cc02fe8",
 		"name": "MINI PROJECT AIRBNB",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Demo",
+			"item": [
+				{
+					"name": "28 January 2022",
+					"item": [
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"herlianto\",\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"ilham\",\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"user3\",\n    \"email\":\"user3@outlook.my\",    \n    \"password\":\"user123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"user3@outlook.my\",    \n    \"password\":\"user123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/user",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User 3",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"User 3 Update\",\n  \"email\": \"update@outlook.my\",\n  \"password\": \"update123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User 3",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 1\",\n    \"location\":\"Jakarta\",\n    \"price\":5000000,\n    \"duration\":5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 2\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 3\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Mawar\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"OPEN\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 2",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Melati\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"CLOSED\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Room 3",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/rooms/3",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show My Rooms",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/myrooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"myrooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/rooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Booking Room 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/booking",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Transaction by UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/bookings",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Duration",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\":1,\n    \"duration\":2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/booking",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Transaction by UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Transactions Pending",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/transactions/order",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"transactions",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/bookings",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show My Rooms Income",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/myrooms/income",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"myrooms",
+										"income"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Checkout Booking 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"book_id\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/booking/checkout",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"booking",
+										"checkout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/bookings",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
 		{
 			"name": "Localhost",
 			"item": [
@@ -296,13 +1005,32 @@
 							"response": []
 						},
 						{
+							"name": "Show My Rooms Sold",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/myrooms/income",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"myrooms",
+										"income"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Create New Room 1",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"Room 1\",\n    \"location\":\"Jakarta\",\n    \"price\":5000000,\n    \"duration\":5\n}",
+									"raw": "{\n    \"name\":\"Room 1\",\n    \"address\":\"Jl.Buntu No 404\",\n    \"location\":\"Jakarta\",\n    \"price\":5000000,\n    \"duration\":5,\n    \"description\":\"Deskripsi Room 1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -329,7 +1057,34 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"Room 2\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1\n}",
+									"raw": "{\n    \"name\":\"Room 2\",\n    \"address\":\"Jl.Sukses Selalu No 200\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1,\n    \"description\":\"Deskripsi Room 2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/rooms",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 3\",\n    \"address\":\"Jl.Jati No 100\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1,\n    \"description\":\"Deskripsi Room 3\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -356,7 +1111,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"Room Mawar\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"raw": "{\n    \"name\":\"Room Mawar\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Open\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -384,7 +1139,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"Room Melati\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"raw": "{\n    \"name\":\"Room Melati\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"CLOSED\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -406,19 +1161,19 @@
 							"response": []
 						},
 						{
-							"name": "Delete Room 2",
+							"name": "Delete Room 3",
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8000/rooms/2",
+									"raw": "localhost:8000/rooms/3",
 									"host": [
 										"localhost"
 									],
 									"port": "8000",
 									"path": [
 										"rooms",
-										"2"
+										"3"
 									]
 								}
 							},
@@ -469,6 +1224,33 @@
 									"port": "8000",
 									"path": [
 										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Duration",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\":1,\n    \"duration\":2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8000/booking",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"booking"
 									]
 								}
 							},
@@ -546,6 +1328,1200 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "AWS",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/users",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"herlianto\",\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/register",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"ilham\",\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/register",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"kucing\",\n    \"email\":\"kucing@outlook.my\",    \n    \"password\":\"kucing123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/register",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/login",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/login",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"kucing@outlook.my\",    \n    \"password\":\"kucing123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/login",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/user",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User 3",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Harimau\",\n  \"email\": \"Harimau@outlook.my\",\n  \"password\": \"Harimau123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/users",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User 3",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/users",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rooms",
+					"item": [
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/rooms",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show My Rooms",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/myrooms",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"myrooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 1\",\n    \"location\":\"Jakarta\",\n    \"price\":5000000,\n    \"duration\":5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/rooms",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 2\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/rooms",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Mawar\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/rooms/1",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 2",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Melati\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/rooms/2",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Room 2",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/rooms/2",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"rooms",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "Booking Room User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/booking",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/bookings",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Show Transaction by UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/transactions",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Transactions Pending",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "18.136.199.65/transactions/order",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"transactions",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Manual Update Transactions Status",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"invoice_id\":\"INV-2/book/5414ce18-730a-4029-9302-16e8f3a3471a\",\n    \"status\":\"settlement\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "18.136.199.65/transactions",
+									"host": [
+										"18",
+										"136",
+										"199",
+										"65"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Okteto",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/users",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"herlianto\",\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/register",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"ilham\",\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/register",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"kucing\",\n    \"email\":\"kucing@outlook.my\",    \n    \"password\":\"kucing123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/register",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"herlianto@outlook.my\",    \n    \"password\":\"herlianto123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/login",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"ilham@outlook.my\",    \n    \"password\":\"ilham123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/login",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User 3",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"kucing@outlook.my\",    \n    \"password\":\"kucing123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/login",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/user",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User 3",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Harimau\",\n  \"email\": \"Harimau@outlook.my\",\n  \"password\": \"Harimau123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/users",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User 3",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/users",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rooms",
+					"item": [
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show My Rooms",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/myrooms",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"myrooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 1\",\n    \"location\":\"Jakarta\",\n    \"price\":5000000,\n    \"duration\":5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create New Room 2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room 2\",\n    \"location\":\"Jakarta\",\n    \"price\":1000000,\n    \"duration\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Mawar\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms/1",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Room 2",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Room Melati\",\n    \"location\":\"Jakarta\",\n    \"price\":6000000,\n    \"duration\":5,\n    \"status\":\"Closed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms/2",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Room 2",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/rooms/2",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"rooms",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "Booking Room User 1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"room_id\":1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/booking",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"booking"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/bookings",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Show Transaction by UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/transactions",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Transactions Pending",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/transactions/order",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"transactions",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Manual Update Transactions Status",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"invoice_id\":\"INV-2/book/5414ce18-730a-4029-9302-16e8f3a3471a\",\n    \"status\":\"settlement\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://herlianto-github.cloud.okteto.net/transactions",
+									"protocol": "https",
+									"host": [
+										"herlianto-github",
+										"cloud",
+										"okteto",
+										"net"
+									],
+									"path": [
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	],
 	"auth": {
@@ -553,7 +2529,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NDMyMDgwOTUsInVzZXJpZCI6MX0.DEFr6ii-mVEhI2jUSe4Yp_OYQmAi5jT2MHXo10SkU7M",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NDMyOTcxNjksInVzZXJpZCI6Mn0.vwq2fPgnCetIEcermxNpYvA9vMAm9rKIBG4Fdm2AcV0",
 				"type": "string"
 			}
 		]
