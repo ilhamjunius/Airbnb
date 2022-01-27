@@ -115,7 +115,7 @@ func TestBookingRepo(t *testing.T) {
 
 	})
 	t.Run("Update booking into Database", func(t *testing.T) {
-		res, err := bookingRepo.Update(1, 1, 1)
+		res, err := bookingRepo.Update(1)
 		assert.Nil(t, err)
 		assert.Equal(t, res, res)
 	})

@@ -128,3 +128,19 @@ func (bkrep BooksController) Update() echo.HandlerFunc {
 		}
 	}
 }
+
+func (bkrep BooksController) CheckoutNow() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		newCheckoutReq := CheckoutNowRequestFormat{}
+		if err := c.Bind(&newCheckoutReq); err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+		if res, err := bkrep.Repo.Update(newCheckoutReq.BookID); err != nil || res.ID == 0 {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			return c.JSON(http.StatusOK, common.NewSuccessOperationResponse())
+		}
+
+	}
+}
