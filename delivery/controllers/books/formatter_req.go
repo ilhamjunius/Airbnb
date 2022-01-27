@@ -6,3 +6,7 @@ type NewBookingRequestFormat struct {
 type GetBookingRequestFormat struct {
 	RoomID uint `json:"room_id"`
 }
+type UpdateBookingRequestFormat struct {
+	RoomID   uint `json:"room_id"`
+	Duration int  `json:"duration"`
+}

@@ -35,12 +35,14 @@ func (br *BooksRepository) Create(newBooking entities.Book) (entities.Book, erro
 	return newBooking, nil
 }
 
-func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error) {
+func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
 
 	room := entities.Room{}
 	tr.db.Where("id=?", roomID).Find(&room)
 	fmt.Println("===> STATUS ROOM <===", room.Status)
+	fmt.Print("===> INVOICEID <===", invoiceID)
 	if room.Status != "CLOSED" {
+
 		newRoom := entities.Room{
 			Status: "CLOSED",
 		}
@@ -63,10 +65,43 @@ func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID str
 
 		return newTransaction, nil
 	} else {
-		failTransaction := entities.Transaction{
-			ID: 0,
+
+		newRoom := entities.Room{
+			Status: "CLOSED",
 		}
-		return failTransaction, nil
+		tr.db.Where("id=?", roomID).Model(&room).Updates(newRoom)
+
+		newPrice := (room.Price / room.Duration) * duration
+
+		req := &snap.Request{
+			TransactionDetails: midtrans.TransactionDetails{
+				OrderID:  invoiceID,
+				GrossAmt: int64(newPrice),
+			},
+		}
+		snapResp, _ := snap.CreateTransaction(req)
+
+		newTransaction := entities.Transaction{}
+		newTransaction.Invoice = invoiceID
+		newTransaction.Status = "Pending"
+		newTransaction.Url = snapResp.RedirectURL
+
+		tr.db.Save(&newTransaction)
+
+		return newTransaction, nil
 	}
+
+}
+
+func (tr *BooksRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+	book := entities.Book{}
+	tr.db.Where("user_id=? AND room_id=?", userID, roomID).Find(&book)
+
+	// updateRoom := entities.Book{
+	// 	Checkout: "",
+	// }
+
+	// tr.db.Where("id=?", book.ID).Model(&book).Updates(updateRoom)
+	return book, nil
 
 }
