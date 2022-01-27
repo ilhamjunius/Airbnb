@@ -25,34 +25,3 @@
 #    and best practices on handling the access key credentials.
 
 name: Deploy to Amazon ECS
-
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    environment: main
-
-    steps:
-    - name: Configure AWS credentials
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd project3
-          cd project-airbnb
-          git pull origin main
-          docker-compose down --rmi all
-          docker-compose up --build -d
-          docker tag project-airbnb_app herliantodev/project-airbnb
-          docker push herliantodev/project-airbnb 
-          cd deploy
-          cd nginx-deploy
-          export KUBECONFIG=$HOME/Downloads/okteto-kube.config:${KUBECONFIG:-$HOME/.kube/config}
-          ./execute.sh    
