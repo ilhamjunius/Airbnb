@@ -121,7 +121,7 @@ func (bkrep BooksController) Update() echo.HandlerFunc {
 		} else {
 			responses := TransactionsResponseFormat{
 				Code:    http.StatusOK,
-				Message: "Succesful Operation",
+				Message: "Successful Operation",
 				Data:    res,
 			}
 			return c.JSON(http.StatusOK, responses)

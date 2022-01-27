@@ -15,28 +15,14 @@ import (
 
 func TestMain(m *testing.M) {
 
-	m.Run()
 	config := configs.GetConfig()
-	db := utils.InitDB(config)
-	db.Migrator().DropTable(&entities.User{})
-	db.Migrator().DropTable(&entities.Room{})
-	db.Migrator().DropTable(&entities.Transaction{})
-	db.Migrator().DropTable(&entities.Book{})
-
+	fmt.Println(config)
+	m.Run()
 }
 func TestBookingRepo(t *testing.T) {
 	config := configs.GetConfig()
 	db := utils.InitDB(config)
-	db.Migrator().DropTable(&entities.User{})
-	db.Migrator().DropTable(&entities.Room{})
-	db.Migrator().DropTable(&entities.Transaction{})
-	db.Migrator().DropTable(&entities.Book{})
-	db.AutoMigrate(&entities.User{})
-	db.AutoMigrate(&entities.Room{})
-	db.AutoMigrate(&entities.Transaction{})
-	db.AutoMigrate(&entities.Book{})
 
-	// transactionRepo := transactions.NewTransactionsRepo(db)
 	bookingRepo := NewBooksRepo(db)
 	userRepo := users.NewUsersRepo(db)
 	roomRepo := rooms.NewRoomsRepo(db)
@@ -71,7 +57,20 @@ func TestBookingRepo(t *testing.T) {
 		mockRoom.Price = 300000
 		mockRoom.Duration = 7
 		mockRoom.User_id = 1
-		mockRoom.Status = "Open"
+		mockRoom.Status = "OPEN"
+
+		_, err := roomRepo.Create(mockRoom)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Insert Room into Database", func(t *testing.T) {
+		var mockRoom entities.Room
+		mockRoom.Name = "Room1"
+		mockRoom.Location = "Jakarta"
+		mockRoom.Price = 300000
+		mockRoom.Duration = 7
+		mockRoom.User_id = 1
+		mockRoom.Status = "CLOSED"
 
 		_, err := roomRepo.Create(mockRoom)
 		assert.Nil(t, err)
@@ -81,6 +80,15 @@ func TestBookingRepo(t *testing.T) {
 		var mockBook entities.Book
 		mockBook.User_id = 2
 		mockBook.Room_id = 1
+		invoice := "INV-2/book/41a74c38-2880-4d91-8875-f8f0f06a641c"
+		_, err := bookingRepo.CreateTransactions(mockBook.User_id, mockBook.Room_id, invoice, 0)
+		assert.Nil(t, err)
+
+	})
+	t.Run("Insert Transaction into Database", func(t *testing.T) {
+		var mockBook entities.Book
+		mockBook.User_id = 2
+		mockBook.Room_id = 2
 		invoice := "INV-2/book/41a74c38-2880-4d91-8875-f8f0f06a641c"
 		_, err := bookingRepo.CreateTransactions(mockBook.User_id, mockBook.Room_id, invoice, 0)
 		assert.Nil(t, err)
@@ -97,16 +105,19 @@ func TestBookingRepo(t *testing.T) {
 
 	})
 	t.Run("Insert Booking into Database", func(t *testing.T) {
-
 		_, err := bookingRepo.Get(2, 1)
 		assert.Nil(t, err)
 
 	})
 	t.Run("Show Booking into Database", func(t *testing.T) {
-
 		_, err := bookingRepo.Gets(2)
 		assert.Nil(t, err)
 
+	})
+	t.Run("Update booking into Database", func(t *testing.T) {
+		res, err := bookingRepo.Update(1, 1, 1)
+		assert.Nil(t, err)
+		assert.Equal(t, res, res)
 	})
 
 }

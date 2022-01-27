@@ -119,6 +119,32 @@ func TestBookingTrue(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Successful Operation", response.Message)
 	})
+
+	t.Run("Test Update Booking", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"room_id":  1,
+			"duration": 5,
+		})
+
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+
+		context := e.NewContext(req, res)
+		context.SetPath("/booking")
+
+		bookController := NewBooksControllers(mockBookRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(bookController.Update())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := TransactionsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Successful Operation", response.Message)
+	})
 }
 
 type mockBookRepository struct{}
@@ -247,7 +273,7 @@ func TestBookingFalse(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath("/booking")
 
-		bookController := NewBooksControllers(mockFalseBookRepository{})
+		bookController := NewBooksControllers(mockFalseBookRepository1{})
 		if err := middleware.JWT([]byte("RAHASIA"))(bookController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -306,6 +332,55 @@ func TestBookingFalse(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Bad Request", response.Message)
 	})
+	t.Run("Test Error Request Update Booking", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"room_id":  "abc",
+			"duration": 5,
+		})
+
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+
+		context := e.NewContext(req, res)
+		context.SetPath("/booking")
+
+		bookController := NewBooksControllers(mockFalseBookRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(bookController.Update())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := TransactionsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Bad Request", response.Message)
+	})
+	t.Run("Test Error Request Update Booking", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"room_id": 0,
+		})
+
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+
+		context := e.NewContext(req, res)
+		context.SetPath("/booking")
+
+		bookController := NewBooksControllers(mockFalseBookRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(bookController.Update())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := TransactionsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
 }
 
 type mockFalseBookRepository struct{}
@@ -324,10 +399,32 @@ func (m mockFalseBookRepository) Create(newBooking entities.Book) (entities.Book
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
 func (m mockFalseBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
-	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, errors.New("False Login Object")
+	return entities.Book{ID: 0, Room_id: 0}, errors.New("Not Found")
 }
 func (m mockFalseBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
-	return entities.Transaction{ID: 1, Invoice: "INV-3/book/641a10e2-344b-4021-b23c-7035821853ec", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, nil
+	return entities.Transaction{ID: 0, Invoice: "", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, nil
+}
+
+type mockFalseBookRepository1 struct{}
+
+func (m mockFalseBookRepository1) Gets(userID uint) ([]entities.Book, error) {
+	return []entities.Book{
+		{ID: 1, User_id: 2, Room_id: 1, Transaction_id: 1},
+	}, errors.New("False Login Object")
+}
+func (m mockFalseBookRepository1) Get(userID, roomID uint) ([]entities.Book, error) {
+	return []entities.Book{
+		{ID: 1, User_id: 2, Room_id: 1, Transaction_id: 1},
+	}, errors.New("False Login Object")
+}
+func (m mockFalseBookRepository1) Create(newBooking entities.Book) (entities.Book, error) {
+	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
+}
+func (m mockFalseBookRepository1) Update(userID, roomID uint, duration int) (entities.Book, error) {
+	return entities.Book{ID: 0, Room_id: 0}, errors.New("Not Found")
+}
+func (m mockFalseBookRepository1) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
+	return entities.Transaction{ID: 1, Invoice: "", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, nil
 }
 
 type mockFalseCreateBookRepository struct{}
@@ -349,7 +446,7 @@ func (m mockFalseCreateBookRepository) Update(userID, roomID uint, duration int)
 	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, errors.New("False Login Object")
 }
 func (m mockFalseCreateBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
-	return entities.Transaction{ID: 1, Invoice: "INV-3/book/641a10e2-344b-4021-b23c-7035821853ec", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, errors.New("False Login Object")
+	return entities.Transaction{ID: 0, Invoice: "", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, errors.New("False Login Object")
 }
 
 type mockUserRepository struct{}
