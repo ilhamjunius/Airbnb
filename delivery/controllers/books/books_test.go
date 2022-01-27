@@ -13,6 +13,7 @@ import (
 	"project-airbnb/delivery/controllers/users"
 	"project-airbnb/entities"
 	"testing"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -135,10 +136,10 @@ func (m mockBookRepository) Get(userID, roomID uint) ([]entities.Book, error) {
 func (m mockBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Transaction_id: 1}, nil
 }
-func (m mockBookRepository) Update(trID uint) (entities.Book, error) {
-	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: "", Checkout: "", Transaction_id: 1}, nil
+func (m mockBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, nil
 }
-func (m mockBookRepository) CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error) {
+func (m mockBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
 	return entities.Transaction{ID: 1, Invoice: "INV-3/book/641a10e2-344b-4021-b23c-7035821853ec", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, nil
 }
 
@@ -322,10 +323,10 @@ func (m mockFalseBookRepository) Get(userID, roomID uint) ([]entities.Book, erro
 func (m mockFalseBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseBookRepository) Update(trID uint) (entities.Book, error) {
-	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: "", Checkout: "", Transaction_id: 1}, errors.New("False Login Object")
+func (m mockFalseBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseBookRepository) CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error) {
+func (m mockFalseBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
 	return entities.Transaction{ID: 1, Invoice: "INV-3/book/641a10e2-344b-4021-b23c-7035821853ec", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, nil
 }
 
@@ -344,10 +345,10 @@ func (m mockFalseCreateBookRepository) Get(userID, roomID uint) ([]entities.Book
 func (m mockFalseCreateBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseCreateBookRepository) Update(trID uint) (entities.Book, error) {
-	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: "", Checkout: "", Transaction_id: 1}, errors.New("False Login Object")
+func (m mockFalseCreateBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseCreateBookRepository) CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error) {
+func (m mockFalseCreateBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
 	return entities.Transaction{ID: 1, Invoice: "INV-3/book/641a10e2-344b-4021-b23c-7035821853ec", Status: "PENDING", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/ecf407a9-814a-46b8-afc6-aa82b67c3496"}, errors.New("False Login Object")
 }
 

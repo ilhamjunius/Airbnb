@@ -49,5 +49,6 @@ func RegisterPath(e *echo.Echo, uctrl *users.UsersController, rmCtrl *rooms.Room
 	e.POST("/booking", bkCtrl.Create(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.GET("/booking", bkCtrl.Get(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 	e.GET("/bookings", bkCtrl.Gets(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
+	e.PUT("/booking", bkCtrl.Update(), middleware.JWT([]byte(common.JWT_SECRET_KEY)))
 
 }
