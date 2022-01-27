@@ -162,7 +162,7 @@ func (m mockBookRepository) Get(userID, roomID uint) ([]entities.Book, error) {
 func (m mockBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Transaction_id: 1}, nil
 }
-func (m mockBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+func (m mockBookRepository) Update(bookID uint) (entities.Book, error) {
 	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, nil
 }
 func (m mockBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
@@ -398,7 +398,7 @@ func (m mockFalseBookRepository) Get(userID, roomID uint) ([]entities.Book, erro
 func (m mockFalseBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+func (m mockFalseBookRepository) Update(BookID uint) (entities.Book, error) {
 	return entities.Book{ID: 0, Room_id: 0}, errors.New("Not Found")
 }
 func (m mockFalseBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
@@ -420,7 +420,7 @@ func (m mockFalseBookRepository1) Get(userID, roomID uint) ([]entities.Book, err
 func (m mockFalseBookRepository1) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseBookRepository1) Update(userID, roomID uint, duration int) (entities.Book, error) {
+func (m mockFalseBookRepository1) Update(bookID uint) (entities.Book, error) {
 	return entities.Book{ID: 0, Room_id: 0}, errors.New("Not Found")
 }
 func (m mockFalseBookRepository1) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
@@ -442,7 +442,7 @@ func (m mockFalseCreateBookRepository) Get(userID, roomID uint) ([]entities.Book
 func (m mockFalseCreateBookRepository) Create(newBooking entities.Book) (entities.Book, error) {
 	return entities.Book{ID: 0, User_id: 2, Room_id: 1, Transaction_id: 1}, errors.New("False Login Object")
 }
-func (m mockFalseCreateBookRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+func (m mockFalseCreateBookRepository) Update(bookID uint) (entities.Book, error) {
 	return entities.Book{ID: 1, User_id: 2, Room_id: 1, Checkin: time.Time{}, Checkout: time.Time{}, Transaction_id: 1}, errors.New("False Login Object")
 }
 func (m mockFalseCreateBookRepository) CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error) {
