@@ -1,4 +1,3 @@
-[![Deploy to Amazon ECS](https://github.com/herlianto-github/Project-airbnb/actions/workflows/aws.yml/badge.svg)](https://github.com/herlianto-github/Project-airbnb/actions/workflows/aws.yml)
 
 # Project-airbnb
 
