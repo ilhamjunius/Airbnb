@@ -43,6 +43,12 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 			Status: status,
 		}
 		tr.db.Where("invoice=?", invoiceID).Model(&transactionUpdate).Updates(newTransactions)
+		if status == "cancel" {
+			newRoom := entities.Room{
+				Status: "OPEN",
+			}
+			tr.db.Where("id=?", bookUpdate.Room_id).Model(&roomUpdate).Updates(newRoom)
+		}
 	} else {
 		tr.db.Where("invoice=?", invoiceID).Find(&transactionUpdate)
 		tr.db.Where("transaction_id=?", transactionUpdate.ID).Find(&bookUpdate)
@@ -58,10 +64,6 @@ func (tr *TransactionsRepository) Update(invoiceID, status string) (entities.Tra
 			Checkout: checkout.String(),
 		}
 		tr.db.Where("id=?", bookUpdate.ID).Model(&bookUpdate).Updates(newBook)
-		newRoom := entities.Room{
-			Status: "CLOSED",
-		}
-		tr.db.Where("id=?", bookUpdate.Room_id).Model(&roomUpdate).Updates(newRoom)
 
 		transactionUpdate.Status = status
 		tr.db.Save(&transactionUpdate)

@@ -9,7 +9,7 @@ type BookingsResponseFormat struct {
 }
 
 type TransactionsResponseFormat struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
+	Code    int                  `json:"code"`
+	Message string               `json:"message"`
+	Data    entities.Transaction `json:"data"`
 }

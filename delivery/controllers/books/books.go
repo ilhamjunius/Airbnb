@@ -81,7 +81,7 @@ func (bkrep BooksController) Create() echo.HandlerFunc {
 			responses := TransactionsResponseFormat{
 				Code:    http.StatusOK,
 				Message: "Successful Operation",
-				Data:    res.Url,
+				Data:    res,
 			}
 
 			newBook := entities.Book{

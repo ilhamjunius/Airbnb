@@ -3,7 +3,6 @@ package books
 import (
 	"fmt"
 	"project-airbnb/entities"
-	"time"
 
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/snap"
@@ -40,37 +39,34 @@ func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID str
 
 	room := entities.Room{}
 	tr.db.Where("id=?", roomID).Find(&room)
+	fmt.Println("===> STATUS ROOM <===", room.Status)
+	if room.Status != "CLOSED" {
+		newRoom := entities.Room{
+			Status: "CLOSED",
+		}
+		tr.db.Where("id=?", roomID).Model(&room).Updates(newRoom)
 
-	req := &snap.Request{
-		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  invoiceID,
-			GrossAmt: int64(room.Price),
-		},
+		req := &snap.Request{
+			TransactionDetails: midtrans.TransactionDetails{
+				OrderID:  invoiceID,
+				GrossAmt: int64(room.Price),
+			},
+		}
+		snapResp, _ := snap.CreateTransaction(req)
+
+		newTransaction := entities.Transaction{}
+		newTransaction.Invoice = invoiceID
+		newTransaction.Status = "Pending"
+		newTransaction.Url = snapResp.RedirectURL
+
+		tr.db.Save(&newTransaction)
+
+		return newTransaction, nil
+	} else {
+		failTransaction := entities.Transaction{
+			ID: 0,
+		}
+		return failTransaction, nil
 	}
-	snapResp, _ := snap.CreateTransaction(req)
 
-	newTransaction := entities.Transaction{}
-	newTransaction.Invoice = invoiceID
-	newTransaction.Status = "PENDING"
-	newTransaction.Url = snapResp.RedirectURL
-
-	tr.db.Save(&newTransaction)
-
-	return newTransaction, nil
-}
-
-func (br *BooksRepository) Update(trID uint) (entities.Book, error) {
-	oldBook := entities.Book{}
-	br.db.Where("transaction_id=?", trID).Find(oldBook)
-	var now = time.Now()
-	oldBook.Checkin = fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day())
-	oldBook.Checkout = fmt.Sprint(now.Year(), "-", now.Month(), "-", now.Day()+7)
-
-	room := entities.Room{}
-	br.db.Where("id=?", oldBook.Room_id).Find(&room)
-	room.Status = "CLOSED"
-	br.db.Save(&room)
-
-	br.db.Save(&oldBook)
-	return oldBook, nil
 }

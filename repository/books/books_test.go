@@ -108,10 +108,5 @@ func TestBookingRepo(t *testing.T) {
 		assert.Nil(t, err)
 
 	})
-	t.Run("Update Booking", func(t *testing.T) {
-		_, err := bookingRepo.Update(2)
-		assert.Nil(t, err)
-
-	})
 
 }
