@@ -37,7 +37,7 @@ type UserRequestFormat struct {
 type MyRoomResponseIncome struct {
 	ID       uint      `json:"id" form:"id"`
 	User_id  uint      `json:"user_id" form:"user_id"`
-	Host_id  uint      `json:"host_id" form:"host_id"`
+	Guest_id uint      `json:"guest_id" form:"guest_id"`
 	Checkin  time.Time `json:"checkin" form:"checkin"`
 	Checkout time.Time `json:"checkout" form:"checkout"`
 	Name     string    `json:"name" form:"name"`

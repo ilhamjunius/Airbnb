@@ -12,6 +12,9 @@ project-airbnb/repository/rooms/rooms.go:34.100,37.3 1 1
 project-airbnb/repository/rooms/rooms.go:40.79,42.122 2 1
 project-airbnb/repository/rooms/rooms.go:46.2,46.18 1 1
 project-airbnb/repository/rooms/rooms.go:42.122,45.3 1 1
-project-airbnb/repository/rooms/rooms.go:48.81,51.2 2 1
-project-airbnb/repository/rooms/rooms.go:53.94,58.2 4 1
-project-airbnb/repository/rooms/rooms.go:60.83,65.2 3 1
+project-airbnb/repository/rooms/rooms.go:48.88,52.16 4 1
+project-airbnb/repository/rooms/rooms.go:55.2,55.20 1 1
+project-airbnb/repository/rooms/rooms.go:52.16,54.3 1 1
+project-airbnb/repository/rooms/rooms.go:57.81,60.2 2 1
+project-airbnb/repository/rooms/rooms.go:62.94,67.2 4 1
+project-airbnb/repository/rooms/rooms.go:69.83,74.2 3 1
