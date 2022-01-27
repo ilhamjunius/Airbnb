@@ -6,5 +6,6 @@ type BooksInterface interface {
 	Gets(userID uint) ([]entities.Book, error)
 	Get(userID, roomID uint) ([]entities.Book, error)
 	Create(newBooking entities.Book) (entities.Book, error)
-	CreateTransactions(userID, roomID uint, invoiceID string) (entities.Transaction, error)
+	CreateTransactions(userID, roomID uint, invoiceID string, duration int) (entities.Transaction, error)
+	Update(userID, roomID uint, duration int) (entities.Book, error)
 }

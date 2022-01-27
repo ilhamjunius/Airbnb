@@ -83,7 +83,7 @@ func TestTransactionsRepo(t *testing.T) {
 		mockBook.User_id = 2
 		mockBook.Room_id = 1
 		invoice := "INV-2/book/41a74c38-2880-4d91-8875-f8f0f06a641c"
-		_, err := bookingRepo.CreateTransactions(mockBook.User_id, mockBook.Room_id, invoice)
+		_, err := bookingRepo.CreateTransactions(mockBook.User_id, mockBook.Room_id, invoice, 0)
 		assert.Nil(t, err)
 
 	})

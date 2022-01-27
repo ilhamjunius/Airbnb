@@ -6,6 +6,7 @@ import (
 	"project-airbnb/entities"
 	"project-airbnb/repository/books"
 	"strconv"
+	"strings"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
@@ -73,9 +74,9 @@ func (bkrep BooksController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
 		}
 		newUUID := uuid.New().String()
-		newInvoice := "INV-" + strconv.Itoa(userID) + "/book/" + newUUID
+		newInvoice := "INV-N/" + strconv.Itoa(userID) + "/book/" + newUUID
 
-		if res, err := bkrep.Repo.CreateTransactions(uint(userID), newBookReq.RoomID, newInvoice); err != nil || res.ID == 0 {
+		if res, err := bkrep.Repo.CreateTransactions(uint(userID), newBookReq.RoomID, newInvoice, 0); err != nil || res.ID == 0 {
 			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
 		} else {
 			responses := TransactionsResponseFormat{
@@ -95,6 +96,35 @@ func (bkrep BooksController) Create() echo.HandlerFunc {
 			}
 			return c.JSON(http.StatusOK, responses)
 
+		}
+	}
+}
+
+func (bkrep BooksController) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userID := int(claims["userid"].(float64))
+
+		newDurationReq := UpdateBookingRequestFormat{}
+		if err := c.Bind(&newDurationReq); err != nil {
+			return c.JSON(http.StatusBadRequest, common.NewBadRequestResponse())
+		}
+
+		newUUID := uuid.New().String()
+		var unic = strings.Split(newUUID, "-")
+
+		newInvoice := "INV-D/" + strconv.Itoa(userID) + "/" + strconv.Itoa(int(newDurationReq.RoomID)) + "/" + strconv.Itoa(newDurationReq.Duration) + "/book/" + unic[0]
+
+		if res, err := bkrep.Repo.CreateTransactions(uint(userID), newDurationReq.RoomID, newInvoice, newDurationReq.Duration); err != nil || res.ID == 0 {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		} else {
+			responses := TransactionsResponseFormat{
+				Code:    http.StatusOK,
+				Message: "Succesful Operation",
+				Data:    res,
+			}
+			return c.JSON(http.StatusOK, responses)
 		}
 	}
 }
