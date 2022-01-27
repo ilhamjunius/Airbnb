@@ -104,6 +104,7 @@ func (rrcon RoomsController) GetMyRoomIncome() echo.HandlerFunc {
 					ID:       room.ID,
 					User_id:  room.User_id,
 					Guest_id: room.Guest_id,
+					Book_id:  room.Book_id,
 					Checkin:  room.Checkin,
 					Checkout: room.Checkout,
 					Name:     room.Name,
