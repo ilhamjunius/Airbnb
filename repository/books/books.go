@@ -3,6 +3,7 @@ package books
 import (
 	"fmt"
 	"project-airbnb/entities"
+	"time"
 
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/snap"
@@ -93,15 +94,23 @@ func (tr *BooksRepository) CreateTransactions(userID, roomID uint, invoiceID str
 
 }
 
-func (tr *BooksRepository) Update(userID, roomID uint, duration int) (entities.Book, error) {
+func (tr *BooksRepository) Update(bookID uint) (entities.Book, error) {
 	book := entities.Book{}
-	tr.db.Where("user_id=? AND room_id=?", userID, roomID).Find(&book)
+	tr.db.Where("id=?", bookID).Find(&book)
+	var now = time.Now()
+	updateRoom := entities.Book{
+		Checkout_early: now,
+	}
+	tr.db.Where("id=?", book.ID).Model(&book).Updates(updateRoom)
 
-	// updateRoom := entities.Book{
-	// 	Checkout: "",
-	// }
+	room := entities.Room{}
+	tr.db.Where("id=?", book.Room_id).Find(&room)
 
-	// tr.db.Where("id=?", book.ID).Model(&book).Updates(updateRoom)
+	updateOpen := entities.Room{
+		Status: "OPEN",
+	}
+	tr.db.Where("id=?", book.Room_id).Model(&room).Updates(updateOpen)
+
 	return book, nil
 
 }

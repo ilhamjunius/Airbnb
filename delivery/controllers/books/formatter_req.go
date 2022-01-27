@@ -10,3 +10,6 @@ type UpdateBookingRequestFormat struct {
 	RoomID   uint `json:"room_id"`
 	Duration int  `json:"duration"`
 }
+type CheckoutNowRequestFormat struct {
+	BookID uint `json:"book_id"`
+}
