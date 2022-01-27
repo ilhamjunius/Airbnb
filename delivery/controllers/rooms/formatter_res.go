@@ -1,5 +1,7 @@
 package rooms
 
+import "time"
+
 type GetRoomsResponseFormat struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
@@ -31,4 +33,17 @@ type UserRequestFormat struct {
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 	Name     string `json:"name" form:"name"`
+}
+type MyRoomResponseIncome struct {
+	ID       uint      `json:"id" form:"id"`
+	User_id  uint      `json:"user_id" form:"user_id"`
+	Host_id  uint      `json:"host_id" form:"host_id"`
+	Checkin  time.Time `json:"checkin" form:"checkin"`
+	Checkout time.Time `json:"checkout" form:"checkout"`
+	Name     string    `json:"name" form:"name"`
+	Address  string    `json:"address" form:"address"`
+	Location string    `json:"location" form:"location"`
+	Price    int       `json:"price" form:"price"`
+	Duration int       `json:"duration" form:"duration"`
+	Status   string    `json:"status" form:"status"`
 }
