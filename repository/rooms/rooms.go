@@ -48,7 +48,7 @@ func (rr *RoomsRepository) GetById(userId, roomId int) (entities.Room, error) {
 func (rr *RoomsRepository) GetMyRoomIncome(userId int) ([]MyRoomResponseIncome, error) {
 	books := entities.Book{}
 	result := []MyRoomResponseIncome{}
-	err := rr.db.Model(&books).Select("rooms.id,rooms.user_id,books.user_id as host_id,books.checkin,books.checkout,rooms.name,rooms.address,rooms.location,rooms.price,rooms.duration,rooms.status").Joins("left join rooms on books.room_id = rooms.id").Where("rooms.user_id=?", userId).Find(&result).Error
+	err := rr.db.Model(&books).Select("rooms.id,rooms.user_id,books.user_id as guest_id,books.checkin,books.checkout,rooms.name,rooms.address,rooms.location,rooms.price,rooms.duration,rooms.status").Joins("left join rooms on books.room_id = rooms.id").Where("rooms.user_id=?", userId).Find(&result).Error
 	if err != nil {
 		return result, err
 	}
