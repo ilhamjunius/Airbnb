@@ -13,6 +13,7 @@ import (
 	"project-airbnb/delivery/common"
 	"project-airbnb/delivery/controllers/users"
 	"project-airbnb/entities"
+	"project-airbnb/repository/rooms"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -245,7 +246,11 @@ func (m mockRoomRepository) Update(editRoom entities.Room, roomId int) (entities
 func (m mockRoomRepository) Delete(roomID int, userID uint) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, nil
 }
-
+func (m mockRoomRepository) GetMyRoomIncome(userId int) ([]rooms.MyRoomResponseIncome, error) {
+	return []rooms.MyRoomResponseIncome{
+		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
+	}, nil
+}
 func TestUserFalse(t *testing.T) {
 	t.Run("Test Login", func(t *testing.T) {
 		e := echo.New()
@@ -605,6 +610,11 @@ func (m mockFalseRoomRepository) Update(editRoom entities.Room, roomId int) (ent
 }
 func (m mockFalseRoomRepository) Delete(roomID int, userID uint) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, errors.New("False Login Object")
+}
+func (m mockFalseRoomRepository) GetMyRoomIncome(userId int) ([]rooms.MyRoomResponseIncome, error) {
+	return []rooms.MyRoomResponseIncome{
+		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
+	}, errors.New("False Login Object")
 }
 
 type mockUserRepository struct{}

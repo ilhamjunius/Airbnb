@@ -87,6 +87,43 @@ func (rrcon RoomsController) GetsById() echo.HandlerFunc {
 
 	}
 }
+func (rrcon RoomsController) GetMyRoomIncome() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uid := c.Get("user").(*jwt.Token)
+		claims := uid.Claims.(jwt.MapClaims)
+		userID := int(claims["userid"].(float64))
+		rooms, err := rrcon.Repo.GetMyRoomIncome(userID)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, common.NewNotFoundResponse())
+		}
+		data := []MyRoomResponseIncome{}
+
+		for _, room := range rooms {
+			data = append(
+				data, MyRoomResponseIncome{
+					ID:       room.ID,
+					User_id:  room.User_id,
+					Host_id:  room.Host_id,
+					Checkin:  room.Checkin,
+					Checkout: room.Checkout,
+					Name:     room.Name,
+					Address:  room.Address,
+					Location: room.Location,
+					Duration: room.Duration,
+					Price:    room.Price,
+					Status:   room.Status,
+				},
+			)
+		}
+		response := GetRoomsResponseFormat{
+			Code:    http.StatusOK,
+			Message: "Successful Operation",
+			Data:    data,
+		}
+		return c.JSON(http.StatusOK, response)
+
+	}
+}
 func (rrcon RoomsController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uid := c.Get("user").(*jwt.Token)
