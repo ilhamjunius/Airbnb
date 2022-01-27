@@ -38,6 +38,7 @@ type MyRoomResponseIncome struct {
 	ID       uint      `json:"id" form:"id"`
 	User_id  uint      `json:"user_id" form:"user_id"`
 	Guest_id uint      `json:"guest_id" form:"guest_id"`
+	Book_id  uint      `json:"book_id" form:"book_id"`
 	Checkin  time.Time `json:"checkin" form:"checkin"`
 	Checkout time.Time `json:"checkout" form:"checkout"`
 	Name     string    `json:"name" form:"name"`
