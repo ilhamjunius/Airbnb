@@ -7,11 +7,11 @@ servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/herlianto7/Airbnb-v1/1.0.0
-  - description: Production Server
+  - description: Production
     url: https://herlianto-github.cloud.okteto.net
-  - description: Demo Server
+  - description: Demo
     url: http://18.136.199.65
-  - description: Testing Server
+  - description: Testing
     url: https://localhost:8000
 paths:
   /register:
@@ -198,7 +198,8 @@ paths:
         '404':
           $ref: '#/components/responses/Response404'
 
-  /bookings:
+      
+  /booking:
     post:
       security:
         - bearerAuth: []
@@ -223,6 +224,40 @@ paths:
     get:
       security:
         - bearerAuth: []
+      summary: Show Booked By Room ID
+      tags:
+        - Bookings     
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200AllBooks'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update Room Duration
+      tags:
+        - Bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BooksSchemaUpdateDuration'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200BooksCreate'
+        '400':
+          $ref: '#/components/responses/Response400' 
+        '404':
+          $ref: '#/components/responses/Response404'      
+  /bookings:
+    get:
+      security:
+        - bearerAuth: []
       summary: Show All Booked Rooms
       tags:
         - Bookings      
@@ -234,8 +269,29 @@ paths:
         '404':
           $ref: '#/components/responses/Response404'
         '500':
-          $ref: '#/components/responses/Response500'           
-
+          $ref: '#/components/responses/Response500'              
+  /booking/checkout:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Request Checkout Early
+      tags:
+        - Bookings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BooksSchemaCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200BookCheckout'
+        '400':
+          $ref: '#/components/responses/Response400'
+        '404':
+          $ref: '#/components/responses/Response404'
+        '500':
+          $ref: '#/components/responses/Response500'
   /transactions:
     get:
       security:
@@ -260,6 +316,18 @@ paths:
           $ref: '#/components/responses/Response200AllTransactions'                
         '500':
           $ref: '#/components/responses/Response500'  
+  /transactions/callback:
+    post:
+      security:
+        - bearerAuth: []
+      summary: Receive 3rd party Payment Notification
+      tags:
+        - Transactions      
+      responses:
+        '200':
+          $ref: '#/components/responses/Response200'                
+        '500':
+          $ref: '#/components/responses/Response500'          
 components:
   securitySchemes:
     bearerAuth:           
@@ -479,8 +547,63 @@ components:
                 ID: 1
                 User_id: 2
                 Room_id: 1
-                Checkin: ""
-                Checkout: ""
+                Checkin: "2022-01-28"
+                Checkout: "2022-02-02"
+                Checkout_early: ""
+                Transaction_id: 1
+    Response200BookDuration:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                CreateAt: 
+                UpdateAt:
+                DeleteAt:
+                ID: 1
+                User_id: 2
+                Room_id: 1
+                Checkin: "2022-01-28"
+                Checkout: "2022-02-05"
+                Checkout_early: ""
+                Transaction_id: 1
+    Response200BookCheckout:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number                
+              message:
+                type: string                
+              data:
+                type: string
+            example:
+              code: 200
+              message: "Successful Operation"                 
+              data: 
+                CreateAt: 
+                UpdateAt:
+                DeleteAt:
+                ID: 1
+                User_id: 2
+                Room_id: 1
+                Checkin: "2022-01-28"
+                Checkout: "2022-02-05"
+                Checkout_early: "2022-01-28"
                 Transaction_id: 1
     Response200AllTransactions:
       description: Successful Operation
@@ -619,3 +742,12 @@ components:
           room_id:
             type: integer
             example: 1          
+    BooksSchemaUpdateDuration:
+        type: object
+        properties:   
+          room_id:
+            type: integer
+            example: 1   
+          duration:
+            type: integer
+            example: 3
