@@ -132,7 +132,7 @@ func TestTransactionTrue(t *testing.T) {
 		response := users.LoginResponseFormat{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		fmt.Println("Response:", response)
-		assert.Equal(t, "Successful Operation", "")
+		assert.Equal(t, "Successful Operation", response.Message)
 	})
 
 }
@@ -150,7 +150,7 @@ func (m mockTransactionRepository) Gets(userID uint) ([]entities.Transaction, er
 	}, nil
 }
 func (m mockTransactionRepository) Update(invoiceID, status string) (entities.Transaction, error) {
-	return entities.Transaction{ID: 1, Invoice: "invoice", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/56cfa145-ccb0-4e7a-a79c-450014f4edb3", Status: "Paid"}, nil
+	return entities.Transaction{ID: 1, Invoice: "INV-3/book/79c2f64d-6e6a-46fb-88c0-7dadc1cd883b", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/56cfa145-ccb0-4e7a-a79c-450014f4edb3", Status: "Paid"}, nil
 }
 
 // func (m mockTransactionRepository) UpdateCallBack(invoiceID, status string) (entities.Transaction, error) {
@@ -262,6 +262,50 @@ func TestTransactionFalse(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Bad Request", response["message"])
 	})
+	t.Run("Test Error Update Callback transactions", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"order_id":           "INV-2/book/14d87b52-75de-47e0-8e19-0322dc4149b3",
+			"transaction_status": "settlement",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/transactions/callback", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+		context.SetPath("/transactions/callback")
+
+		transactionController := NewTransactionsControllers(mockFalseTransactionRepository{})
+		transactionController.UpdateCallBack()(context)
+
+		response := users.LoginResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		fmt.Println("Response:", response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error Update Callback transactions", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]int{
+			"order_id":           1,
+			"transaction_status": 1,
+			// "approval_code": "asd",
+			// "gross_amount":  "asd",
+		})
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+		context.SetPath("/transactions/callback")
+
+		transactionController := NewTransactionsControllers(mockFalseTransactionRepository{})
+		transactionController.UpdateCallBack()(context)
+
+		response := users.LoginResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		fmt.Println("Response:", response)
+		assert.Equal(t, "Bad Request", response.Message)
+	})
 
 }
 
@@ -278,7 +322,7 @@ func (m mockFalseTransactionRepository) Gets(userID uint) ([]entities.Transactio
 	}, errors.New("False Login Object")
 }
 func (m mockFalseTransactionRepository) Update(invoiceID, status string) (entities.Transaction, error) {
-	return entities.Transaction{ID: 1, Invoice: "invoice", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/56cfa145-ccb0-4e7a-a79c-450014f4edb3", Status: "Paid"}, errors.New("False Login Object")
+	return entities.Transaction{ID: 1, Invoice: "INV-3/book/79c2f64d-6e6a-46fb-88c0-7dadc1cd883b", Url: "https://app.sandbox.midtrans.com/snap/v2/vtweb/56cfa145-ccb0-4e7a-a79c-450014f4edb3", Status: "Paid"}, errors.New("False Login Object")
 }
 
 type mockUserRepository struct{}

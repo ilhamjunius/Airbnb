@@ -133,6 +133,26 @@ func TestUserTrue(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Successful Operation", response.Message)
 	})
+	t.Run("Test Get My Room By Id", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/room")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		roomController := NewRoomsControllers(mockRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetsById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Successful Operation", response.Message)
+	})
 	t.Run("Test Get All Room", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodPut, "/", nil)
@@ -152,12 +172,30 @@ func TestUserTrue(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Successful Operation", response.Message)
 	})
+	t.Run("Test Get All Room By ID", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/rooms")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		roomController := NewRoomsControllers(mockRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Successful Operation", response.Message)
+	})
 	t.Run("Test Delete Room", func(t *testing.T) {
 		e := echo.New()
-		requestBody, _ := json.Marshal(map[string]int{
-			"room_id": 1,
-		})
-		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(requestBody))
+
+		req := httptest.NewRequest(http.MethodDelete, "/", nil)
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -187,10 +225,16 @@ func (m mockRoomRepository) Gets(userId int) ([]entities.Room, error) {
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, nil
 }
+func (m mockRoomRepository) GetsById(userId, roomId int) (entities.Room, error) {
+	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked", Desciption: "Deskripsi Room 1"}, nil
+}
 func (m mockRoomRepository) Get(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, nil
+}
+func (m mockRoomRepository) GetById(userId, roomId int) (entities.Room, error) {
+	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked", Desciption: "Deskripsi Room 1"}, nil
 }
 func (m mockRoomRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, nil
@@ -395,6 +439,44 @@ func TestUserFalse(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Not Found", response.Message)
 	})
+	t.Run("Test Error Get My Room By ID", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/room")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetsById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error Request Get My Room By ID", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/room")
+		context.SetParamNames("id")
+		context.SetParamValues("asd")
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetsById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Bad Request", response.Message)
+	})
 	t.Run("Test Error Get All Room", func(t *testing.T) {
 		e := echo.New()
 		req := httptest.NewRequest(http.MethodPut, "/", nil)
@@ -412,6 +494,44 @@ func TestUserFalse(t *testing.T) {
 		response := GetRoomsResponseFormat{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error Get All Room By ID", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/rooms")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Not Found", response.Message)
+	})
+	t.Run("Test Error Request Get All Room By ID", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodPut, "/", nil)
+		res := httptest.NewRecorder()
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtToken))
+		context := e.NewContext(req, res)
+		context.SetPath("/rooms")
+		context.SetParamNames("id")
+		context.SetParamValues("asd")
+		roomController := NewRoomsControllers(mockFalseRoomRepository{})
+		if err := middleware.JWT([]byte("RAHASIA"))(roomController.GetById())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+		response := GetRoomsResponseFormat{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, "Bad Request", response.Message)
 	})
 	t.Run("Test Error  Request Delete Room", func(t *testing.T) {
 		e := echo.New()
@@ -466,10 +586,16 @@ func (m mockFalseRoomRepository) Gets(userId int) ([]entities.Room, error) {
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, errors.New("False Login Object")
 }
+func (m mockFalseRoomRepository) GetsById(userId, roomId int) (entities.Room, error) {
+	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked", Desciption: "Deskripsi Room 1"}, errors.New("False Login Object")
+}
 func (m mockFalseRoomRepository) Get(userId int) ([]entities.Room, error) {
 	return []entities.Room{
 		{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"},
 	}, errors.New("False Login Object")
+}
+func (m mockFalseRoomRepository) GetById(userId, roomId int) (entities.Room, error) {
+	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked", Desciption: "Deskripsi Room 1"}, errors.New("False Login Object")
 }
 func (m mockFalseRoomRepository) Create(newRoom entities.Room) (entities.Room, error) {
 	return entities.Room{ID: 1, Name: "Room1", User_id: 1, Location: "Bandung", Price: 500000, Duration: 7, Status: "Already Booked"}, errors.New("False Login Object")
